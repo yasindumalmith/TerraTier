@@ -462,9 +462,9 @@
             }
           },
           "evaluated_keys": [
-            "resource_type",
+            "versioning_configuration/status",
             "versioning/enabled",
-            "versioning_configuration/status"
+            "resource_type"
           ]
         },
         "code_block": [
@@ -550,9 +550,9 @@
             }
           },
           "evaluated_keys": [
+            "rule/apply_server_side_encryption_by_default/sse_algorithm",
             "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
-            "resource_type",
-            "rule/apply_server_side_encryption_by_default/sse_algorithm"
+            "resource_type"
           ]
         },
         "code_block": [

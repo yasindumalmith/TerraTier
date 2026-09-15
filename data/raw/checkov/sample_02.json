@@ -1058,9 +1058,9 @@
             }
           },
           "evaluated_keys": [
-            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
             "policy/Statement[?(@/Effect == Allow)]/Action[*]",
-            "statement[?(@/effect == Allow)]/actions[*]"
+            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
           ]
         },
         "code_block": [

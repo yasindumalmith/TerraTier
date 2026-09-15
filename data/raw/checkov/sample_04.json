@@ -713,8 +713,8 @@
             }
           },
           "evaluated_keys": [
-            "engine",
-            "copy_tags_to_snapshot"
+            "copy_tags_to_snapshot",
+            "engine"
           ]
         },
         "code_block": [

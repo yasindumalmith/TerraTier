@@ -628,8 +628,8 @@
           },
           "evaluated_keys": [
             "replication_configuration/rules/*/status",
-            "resource_type",
-            "rule/*/status"
+            "rule/*/status",
+            "resource_type"
           ]
         },
         "code_block": [
@@ -757,9 +757,9 @@
             }
           },
           "evaluated_keys": [
-            "block_public_policy",
             "block_public_acls",
-            "resource_type"
+            "resource_type",
+            "block_public_policy"
           ]
         },
         "code_block": [
@@ -867,9 +867,9 @@
             }
           },
           "evaluated_keys": [
-            "rule/apply_server_side_encryption_by_default/sse_algorithm",
             "server_side_encryption_configuration/rule/apply_server_side_encryption_by_default/sse_algorithm",
-            "resource_type"
+            "resource_type",
+            "rule/apply_server_side_encryption_by_default/sse_algorithm"
           ]
         },
         "code_block": [
