@@ -1,8 +1,10 @@
 import argparse
+import importlib.util
 import json
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -26,9 +28,11 @@ def check_required_tools():
 
     missing = []
 
-    for tool in ["terraform", "checkov"]:
-        if shutil.which(tool) is None:
-            missing.append(tool)
+    if shutil.which("terraform") is None:
+        missing.append("terraform")
+
+    if importlib.util.find_spec("checkov") is None:
+        missing.append("checkov (in the active Python environment)")
 
     if missing:
         raise RuntimeError(
@@ -134,7 +138,9 @@ def run_checkov(terraform_dir: Path):
 
     result = run_command(
         [
-            "checkov",
+            sys.executable,
+            "-m",
+            "checkov.main",
             "-d",
             str(terraform_dir),
             "--framework",
