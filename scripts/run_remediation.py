@@ -19,6 +19,13 @@ VALIDATOR_SCRIPT = PROJECT_ROOT / "scripts" / "validate_remediation.py"
 
 DEFAULT_MODEL = "claude-haiku-4-5-20251001"
 DEFAULT_MAX_TOKENS = 4096
+GENERATED_ARTIFACTS = (
+    "main.tf",
+    "prompt.txt",
+    "raw_response.txt",
+    "metadata.json",
+    "result.json",
+)
 
 SAFE_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
 OUTER_TERRAFORM_FENCE = re.compile(
@@ -237,6 +244,7 @@ def make_base_metadata(args, finding, prompt: str):
         "resource_type": finding["resource_type"],
         "model_id": args.model,
         "model_tier": args.tier,
+        "run_id": args.run_id,
         "max_tokens": args.max_tokens,
         "api_input_tokens": None,
         "api_output_tokens": None,
@@ -304,18 +312,25 @@ def import_anthropic_sdk():
     return anthropic
 
 
-def prepare_tier_directory(tier_dir: Path):
-    """Remove stale generated outputs while retaining Terraform's cache."""
-    tier_dir.mkdir(parents=True, exist_ok=True)
+def prepare_output_directory(output_dir: Path, allow_overwrite: bool):
+    """Prepare an output directory while retaining Terraform's cache."""
+    existing_artifacts = [
+        output_dir / filename
+        for filename in GENERATED_ARTIFACTS
+        if (output_dir / filename).exists()
+    ]
 
-    for filename in (
-        "main.tf",
-        "raw_response.txt",
-        "metadata.json",
-        "result.json",
-    ):
-        output_file = tier_dir / filename
-        if output_file.exists():
+    if existing_artifacts and not allow_overwrite:
+        existing_names = ", ".join(path.name for path in existing_artifacts)
+        raise RemediationError(
+            f"Run directory already contains artifacts and will not be overwritten: "
+            f"{output_dir} ({existing_names})"
+        )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    if allow_overwrite:
+        for output_file in existing_artifacts:
             output_file.unlink()
 
 
@@ -323,6 +338,9 @@ def run(args):
     validate_identifier(args.finding_id, "--finding-id")
     validate_identifier(args.sample_id, "--sample-id")
     validate_identifier(args.tier, "--tier")
+
+    if args.run_id is not None:
+        validate_identifier(args.run_id, "--run-id")
 
     if args.max_tokens <= 0:
         raise RemediationError("--max-tokens must be greater than zero.")
@@ -334,15 +352,19 @@ def run(args):
     experiment_dir = EXPERIMENTS_DIR / args.finding_id
     original_dir = experiment_dir / "original"
     tier_dir = experiment_dir / args.tier
-    prompt_file = tier_dir / "prompt.txt"
-    raw_response_file = tier_dir / "raw_response.txt"
-    generated_file = tier_dir / "main.tf"
-    metadata_file = tier_dir / "metadata.json"
-    result_file = tier_dir / "result.json"
+    output_dir = tier_dir / args.run_id if args.run_id else tier_dir
+    prompt_file = output_dir / "prompt.txt"
+    raw_response_file = output_dir / "raw_response.txt"
+    generated_file = output_dir / "main.tf"
+    metadata_file = output_dir / "metadata.json"
+    result_file = output_dir / "result.json"
 
     prompt = build_prompt(args.finding_id, finding, terraform_code)
 
-    prepare_tier_directory(tier_dir)
+    prepare_output_directory(
+        output_dir,
+        allow_overwrite=args.run_id is None,
+    )
     copy_original_files(sample_dir, source_files, original_dir)
     prompt_file.write_text(prompt, encoding="utf-8")
 
@@ -404,7 +426,7 @@ def run(args):
     print(f"Generated Terraform saved to {generated_file}")
     print("Running the existing remediation validator...")
 
-    validation_exit_code = run_validator(args, original_dir, tier_dir)
+    validation_exit_code = run_validator(args, original_dir, output_dir)
     validation_completed = validation_exit_code == 0 and result_file.is_file()
 
     metadata["validation_exit_code"] = validation_exit_code
@@ -414,7 +436,7 @@ def run(args):
     if validation_exit_code != 0:
         raise RemediationError(
             f"The validator exited with status {validation_exit_code}. "
-            f"Generated artifacts remain in {tier_dir}."
+            f"Generated artifacts remain in {output_dir}."
         )
 
     if not result_file.is_file():
@@ -422,7 +444,7 @@ def run(args):
             f"The validator completed without creating the expected result: {result_file}"
         )
 
-    print(f"Experiment artifacts saved to {tier_dir}")
+    print(f"Experiment artifacts saved to {output_dir}")
 
 
 def parse_args():
@@ -434,6 +456,7 @@ def parse_args():
     parser.add_argument("--check-id", required=True)
     parser.add_argument("--resource", required=True)
     parser.add_argument("--tier", default="tier_1")
+    parser.add_argument("--run-id", default=None)
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--max-tokens", type=int, default=DEFAULT_MAX_TOKENS)
     return parser.parse_args()
