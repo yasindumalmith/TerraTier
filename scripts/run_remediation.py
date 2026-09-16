@@ -1,0 +1,456 @@
+import argparse
+import csv
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+FINDINGS_CSV = PROJECT_ROOT / "data" / "processed" / "enriched_findings.csv"
+SAMPLES_DIR = PROJECT_ROOT / "pilot_samples"
+EXPERIMENTS_DIR = PROJECT_ROOT / "experiments"
+VALIDATOR_SCRIPT = PROJECT_ROOT / "scripts" / "validate_remediation.py"
+
+DEFAULT_MODEL = "claude-haiku-4-5-20251001"
+DEFAULT_MAX_TOKENS = 4096
+
+SAFE_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+OUTER_TERRAFORM_FENCE = re.compile(
+    r"\A[ \t\r\n]*```(?:terraform|hcl)[ \t]*\r?\n"
+    r"(?P<code>.*?)"
+    r"(?:\r?\n)?```[ \t\r\n]*\Z",
+    re.IGNORECASE | re.DOTALL,
+)
+
+PROMPT_TEMPLATE = """You are remediating a specific security finding in Terraform Infrastructure-as-Code.
+
+## Target Finding
+
+Finding ID: {finding_id}
+Checkov Check ID: {check_id}
+Checkov Check Name: {check_name}
+Affected Resource: {resource}
+Resource Type: {resource_type}
+
+## Terraform Configuration
+
+{terraform_code}
+
+## Task
+
+Modify the Terraform configuration to remediate ONLY the target security finding identified above.
+
+Follow these requirements:
+
+1. Make the minimum necessary security change.
+2. Preserve the intended infrastructure functionality as much as possible.
+3. Do not delete the affected resource simply to remove the finding.
+4. Do not add Checkov skip comments, suppression directives, or other mechanisms that bypass security scanning.
+5. Do not intentionally modify unrelated resources or unrelated security findings.
+6. Preserve existing variable references, resource relationships, and configuration structure unless changing them is necessary for the remediation.
+7. Produce syntactically valid Terraform/HCL.
+8. Do not invent unnecessary resources, values, or dependencies.
+9. If additional Terraform configuration is genuinely required to remediate the finding, add only what is necessary.
+10. Do not explain the solution.
+
+## Output Format
+
+Return only the complete corrected Terraform configuration.
+
+Do not include:
+
+- Markdown code fences
+- Explanations
+- Comments describing your reasoning
+- Checkov suppression comments
+- Any text before or after the Terraform code
+"""
+
+
+class RemediationError(RuntimeError):
+    """A clear, user-facing remediation runner error."""
+
+
+def validate_identifier(value: str, argument_name: str):
+    """Reject identifiers that could escape the experiment directories."""
+    if not SAFE_IDENTIFIER.fullmatch(value):
+        raise RemediationError(
+            f"{argument_name} must contain only letters, numbers, underscores, "
+            "and hyphens, and must start with a letter or number."
+        )
+
+
+def load_finding(sample_id: str, check_id: str, resource: str):
+    """Load exactly one matching finding from the enriched dataset."""
+    if not FINDINGS_CSV.is_file():
+        raise RemediationError(f"Finding dataset does not exist: {FINDINGS_CSV}")
+
+    with FINDINGS_CSV.open(newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        required_fields = {
+            "sample_id",
+            "check_id",
+            "check_name",
+            "resource",
+            "resource_type",
+        }
+        available_fields = set(reader.fieldnames or [])
+        missing_fields = required_fields - available_fields
+
+        if missing_fields:
+            raise RemediationError(
+                "The enriched findings dataset is missing required columns: "
+                + ", ".join(sorted(missing_fields))
+            )
+
+        matches = [
+            row
+            for row in reader
+            if row.get("sample_id") == sample_id
+            and row.get("check_id") == check_id
+            and row.get("resource") == resource
+        ]
+
+    if not matches:
+        raise RemediationError(
+            "No finding matched "
+            f"sample_id={sample_id!r}, check_id={check_id!r}, "
+            f"resource={resource!r}."
+        )
+
+    if len(matches) > 1:
+        raise RemediationError(
+            f"Expected one matching finding, but found {len(matches)} for "
+            f"sample_id={sample_id!r}, check_id={check_id!r}, "
+            f"resource={resource!r}."
+        )
+
+    return matches[0]
+
+
+def load_terraform_source(sample_id: str):
+    """Read all Terraform files for one pilot sample."""
+    sample_dir = SAMPLES_DIR / sample_id
+
+    if not sample_dir.is_dir():
+        raise RemediationError(f"Terraform sample directory does not exist: {sample_dir}")
+
+    terraform_files = sorted(
+        sample_dir.rglob("*.tf"),
+        key=lambda path: path.relative_to(sample_dir).as_posix(),
+    )
+
+    if not terraform_files:
+        raise RemediationError(f"No Terraform files were found in: {sample_dir}")
+
+    file_contents = [
+        (path, path.read_text(encoding="utf-8"))
+        for path in terraform_files
+    ]
+
+    if len(file_contents) == 1:
+        terraform_code = file_contents[0][1]
+    else:
+        sections = []
+        for path, content in file_contents:
+            relative_path = path.relative_to(sample_dir).as_posix()
+            sections.append(f"# File: {relative_path}\n{content}")
+        terraform_code = "\n\n".join(sections)
+
+    return sample_dir, file_contents, terraform_code
+
+
+def copy_original_files(sample_dir: Path, source_files, original_dir: Path):
+    """Refresh the experiment's source copy without touching pilot_samples."""
+    original_dir.mkdir(parents=True, exist_ok=True)
+
+    for old_file in original_dir.rglob("*.tf"):
+        old_file.unlink()
+
+    for source_file, _ in source_files:
+        relative_path = source_file.relative_to(sample_dir)
+        destination = original_dir / relative_path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_file, destination)
+
+
+def build_prompt(finding_id: str, finding, terraform_code: str):
+    """Complete the common remediation prompt for one finding."""
+    return PROMPT_TEMPLATE.format(
+        finding_id=finding_id,
+        check_id=finding["check_id"],
+        check_name=finding["check_name"],
+        resource=finding["resource"],
+        resource_type=finding["resource_type"],
+        terraform_code=terraform_code,
+    )
+
+
+def strip_outer_terraform_fence(raw_response: str):
+    """Remove one whole-response Terraform/HCL fence and nothing else."""
+    match = OUTER_TERRAFORM_FENCE.fullmatch(raw_response)
+
+    if not match:
+        return raw_response
+
+    code = match.group("code")
+
+    if "```" in code:
+        return raw_response
+
+    return code
+
+
+def extract_text_response(message):
+    """Concatenate text content blocks in their returned order."""
+    text_blocks = [
+        block.text
+        for block in message.content
+        if getattr(block, "type", None) == "text"
+    ]
+
+    if not text_blocks:
+        raise RemediationError("The Anthropic response contained no text blocks.")
+
+    return "".join(text_blocks)
+
+
+def write_metadata(metadata_file: Path, metadata):
+    with metadata_file.open("w", encoding="utf-8") as file:
+        json.dump(metadata, file, indent=2)
+        file.write("\n")
+
+
+def make_base_metadata(args, finding, prompt: str):
+    return {
+        "finding_id": args.finding_id,
+        "sample_id": args.sample_id,
+        "check_id": finding["check_id"],
+        "check_name": finding["check_name"],
+        "resource": finding["resource"],
+        "resource_type": finding["resource_type"],
+        "model_id": args.model,
+        "model_tier": args.tier,
+        "max_tokens": args.max_tokens,
+        "api_input_tokens": None,
+        "api_output_tokens": None,
+        "api_total_tokens": None,
+        "request_latency_seconds": None,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "api_request_success": False,
+        "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+    }
+
+
+def call_anthropic(anthropic_module, model_id: str, max_tokens: int, prompt: str):
+    """Make one synchronous Anthropic Messages API request."""
+    started = time.perf_counter()
+
+    try:
+        client = anthropic_module.Anthropic()
+        message = client.messages.create(
+            model=model_id,
+            max_tokens=max_tokens,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+        )
+    except Exception as exc:
+        latency = time.perf_counter() - started
+        return None, latency, exc
+
+    latency = time.perf_counter() - started
+    return message, latency, None
+
+
+def run_validator(args, original_dir: Path, tier_dir: Path):
+    """Invoke the existing validator without duplicating its logic."""
+    command = [
+        sys.executable,
+        str(VALIDATOR_SCRIPT),
+        "--finding-id",
+        args.finding_id,
+        "--target-check-id",
+        args.check_id,
+        "--target-resource",
+        args.resource,
+        "--original-dir",
+        str(original_dir),
+        "--remediated-dir",
+        str(tier_dir),
+    ]
+
+    return subprocess.run(command, cwd=PROJECT_ROOT).returncode
+
+
+def import_anthropic_sdk():
+    try:
+        import anthropic
+    except ImportError as exc:
+        raise RemediationError(
+            "The Anthropic Python SDK is not installed. Install it with: "
+            ".venv/bin/python -m pip install anthropic"
+        ) from exc
+
+    return anthropic
+
+
+def prepare_tier_directory(tier_dir: Path):
+    """Remove stale generated outputs while retaining Terraform's cache."""
+    tier_dir.mkdir(parents=True, exist_ok=True)
+
+    for filename in (
+        "main.tf",
+        "raw_response.txt",
+        "metadata.json",
+        "result.json",
+    ):
+        output_file = tier_dir / filename
+        if output_file.exists():
+            output_file.unlink()
+
+
+def run(args):
+    validate_identifier(args.finding_id, "--finding-id")
+    validate_identifier(args.sample_id, "--sample-id")
+    validate_identifier(args.tier, "--tier")
+
+    if args.max_tokens <= 0:
+        raise RemediationError("--max-tokens must be greater than zero.")
+
+    anthropic_module = import_anthropic_sdk()
+    finding = load_finding(args.sample_id, args.check_id, args.resource)
+    sample_dir, source_files, terraform_code = load_terraform_source(args.sample_id)
+
+    experiment_dir = EXPERIMENTS_DIR / args.finding_id
+    original_dir = experiment_dir / "original"
+    tier_dir = experiment_dir / args.tier
+    prompt_file = tier_dir / "prompt.txt"
+    raw_response_file = tier_dir / "raw_response.txt"
+    generated_file = tier_dir / "main.tf"
+    metadata_file = tier_dir / "metadata.json"
+    result_file = tier_dir / "result.json"
+
+    prompt = build_prompt(args.finding_id, finding, terraform_code)
+
+    prepare_tier_directory(tier_dir)
+    copy_original_files(sample_dir, source_files, original_dir)
+    prompt_file.write_text(prompt, encoding="utf-8")
+
+    metadata = make_base_metadata(args, finding, prompt)
+    write_metadata(metadata_file, metadata)
+
+    print(f"Requesting remediation from {args.model}...")
+    message, latency, api_error = call_anthropic(
+        anthropic_module,
+        args.model,
+        args.max_tokens,
+        prompt,
+    )
+
+    metadata["request_latency_seconds"] = round(latency, 6)
+
+    if api_error is not None:
+        metadata["api_error_type"] = type(api_error).__name__
+        metadata["api_error_message"] = str(api_error)
+        write_metadata(metadata_file, metadata)
+        raise RemediationError(
+            f"Anthropic API request failed: {api_error}. "
+            f"Failure metadata was saved to {metadata_file}."
+        )
+
+    usage = message.usage
+    input_tokens = getattr(usage, "input_tokens", None)
+    output_tokens = getattr(usage, "output_tokens", None)
+    total_tokens = (
+        input_tokens + output_tokens
+        if isinstance(input_tokens, int) and isinstance(output_tokens, int)
+        else None
+    )
+
+    metadata.update(
+        {
+            "api_input_tokens": input_tokens,
+            "api_output_tokens": output_tokens,
+            "api_total_tokens": total_tokens,
+            "api_request_success": True,
+            "response_id": getattr(message, "id", None),
+            "response_model_id": getattr(message, "model", None),
+            "response_stop_reason": getattr(message, "stop_reason", None),
+        }
+    )
+
+    try:
+        raw_response = extract_text_response(message)
+    except RemediationError as exc:
+        metadata["response_error"] = str(exc)
+        write_metadata(metadata_file, metadata)
+        raise
+
+    raw_response_file.write_text(raw_response, encoding="utf-8")
+    generated_code = strip_outer_terraform_fence(raw_response)
+    generated_file.write_text(generated_code, encoding="utf-8")
+    write_metadata(metadata_file, metadata)
+
+    print(f"Generated Terraform saved to {generated_file}")
+    print("Running the existing remediation validator...")
+
+    validation_exit_code = run_validator(args, original_dir, tier_dir)
+    validation_completed = validation_exit_code == 0 and result_file.is_file()
+
+    metadata["validation_exit_code"] = validation_exit_code
+    metadata["validation_completed"] = validation_completed
+    write_metadata(metadata_file, metadata)
+
+    if validation_exit_code != 0:
+        raise RemediationError(
+            f"The validator exited with status {validation_exit_code}. "
+            f"Generated artifacts remain in {tier_dir}."
+        )
+
+    if not result_file.is_file():
+        raise RemediationError(
+            f"The validator completed without creating the expected result: {result_file}"
+        )
+
+    print(f"Experiment artifacts saved to {tier_dir}")
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Run one Terraform finding through one Anthropic model."
+    )
+    parser.add_argument("--finding-id", required=True)
+    parser.add_argument("--sample-id", required=True)
+    parser.add_argument("--check-id", required=True)
+    parser.add_argument("--resource", required=True)
+    parser.add_argument("--tier", default="tier_1")
+    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--max-tokens", type=int, default=DEFAULT_MAX_TOKENS)
+    return parser.parse_args()
+
+
+def main():
+    try:
+        run(parse_args())
+    except RemediationError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+    except KeyboardInterrupt:
+        print("ERROR: Remediation run interrupted.", file=sys.stderr)
+        return 130
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
