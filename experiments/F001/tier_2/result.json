@@ -8,25 +8,13 @@
   "original_checkov_scan_success": true,
   "remediated_checkov_scan_success": true,
   "target_present_in_original": true,
-  "target_finding_removed": true,
+  "target_finding_removed": false,
   "resource_preserved": true,
   "suppression_added": false,
   "added_suppressions": [],
   "new_findings": [],
-  "removed_findings": [
-    {
-      "check_id": "CKV_AWS_24",
-      "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
-      "resource": "aws_security_group.sample_01",
-      "severity": null,
-      "file_path": "/main.tf",
-      "file_line_range": [
-        1,
-        25
-      ]
-    }
-  ],
+  "removed_findings": [],
   "original_failed_finding_count": 4,
-  "remediated_failed_finding_count": 3,
-  "final_result": "PASS"
+  "remediated_failed_finding_count": 4,
+  "final_result": "FAIL"
 }

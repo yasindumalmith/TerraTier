@@ -3,14 +3,12 @@ resource "aws_security_group" "sample_01" {
   description = "Research sample with insecure SSH access"
 
   ingress {
-    description = "SSH from restricted range"
+    description = "SSH from anywhere"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8"
-    ]
+    cidr_blocks = []
   }
 
   egress {
