@@ -1,0 +1,66 @@
+You are remediating a specific security finding in Terraform Infrastructure-as-Code.
+
+## Target Finding
+
+Finding ID: F001
+Checkov Check ID: CKV_AWS_24
+Checkov Check Name: Ensure no security groups allow ingress from 0.0.0.0:0 to port 22
+Affected Resource: aws_security_group.sample_01
+Resource Type: aws_security_group
+
+## Terraform Configuration
+
+resource "aws_security_group" "sample_01" {
+  name        = "sample-01-open-ssh"
+  description = "Research sample with insecure SSH access"
+
+  ingress {
+    description = "SSH from anywhere"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+}
+
+## Task
+
+Modify the Terraform configuration to remediate ONLY the target security finding identified above.
+
+Follow these requirements:
+
+1. Make the minimum necessary security change.
+2. Preserve the intended infrastructure functionality as much as possible.
+3. Do not delete the affected resource simply to remove the finding.
+4. Do not add Checkov skip comments, suppression directives, or other mechanisms that bypass security scanning.
+5. Do not intentionally modify unrelated resources or unrelated security findings.
+6. Preserve existing variable references, resource relationships, and configuration structure unless changing them is necessary for the remediation.
+7. Produce syntactically valid Terraform/HCL.
+8. Do not invent unnecessary resources, values, or dependencies.
+9. If additional Terraform configuration is genuinely required to remediate the finding, add only what is necessary.
+10. Do not explain the solution.
+
+## Output Format
+
+Return only the complete corrected Terraform configuration.
+
+Do not include:
+
+- Markdown code fences
+- Explanations
+- Comments describing your reasoning
+- Checkov suppression comments
+- Any text before or after the Terraform code
