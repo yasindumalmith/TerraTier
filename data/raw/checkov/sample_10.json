@@ -3,148 +3,6 @@
   "results": {
     "failed_checks": [
       {
-        "check_id": "CKV_AWS_163",
-        "bc_check_id": "BC_AWS_GENERAL_8",
-        "check_name": "Ensure ECR image scanning on push is enabled",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "image_scanning_configuration/[0]/scan_on_push"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_ecr_repository\" \"sample_10\" {\n"
-          ],
-          [
-            2,
-            "  name                 = \"terratier-research-repository\"\n"
-          ],
-          [
-            3,
-            "  image_tag_mutability = \"MUTABLE\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  image_scanning_configuration {\n"
-          ],
-          [
-            6,
-            "    scan_on_push = false\n"
-          ],
-          [
-            7,
-            "  }\n"
-          ],
-          [
-            8,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_10/main.tf",
-        "repo_file_path": "/pilot_samples/sample_10/main.tf",
-        "file_line_range": [
-          1,
-          8
-        ],
-        "resource": "aws_ecr_repository.sample_10",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.ECRImageScanning",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-8",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_10/main.tf"
-      },
-      {
-        "check_id": "CKV_AWS_51",
-        "bc_check_id": "BC_AWS_GENERAL_24",
-        "check_name": "Ensure ECR Image Tags are immutable",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "image_tag_mutability"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_ecr_repository\" \"sample_10\" {\n"
-          ],
-          [
-            2,
-            "  name                 = \"terratier-research-repository\"\n"
-          ],
-          [
-            3,
-            "  image_tag_mutability = \"MUTABLE\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  image_scanning_configuration {\n"
-          ],
-          [
-            6,
-            "    scan_on_push = false\n"
-          ],
-          [
-            7,
-            "  }\n"
-          ],
-          [
-            8,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_10/main.tf",
-        "repo_file_path": "/pilot_samples/sample_10/main.tf",
-        "file_line_range": [
-          1,
-          8
-        ],
-        "resource": "aws_ecr_repository.sample_10",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.ECRImmutableTags",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-24",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_10/main.tf"
-      },
-      {
         "check_id": "CKV_AWS_136",
         "bc_check_id": "BC_AWS_GENERAL_53",
         "check_name": "Ensure that ECR repositories are encrypted using KMS",
@@ -156,44 +14,36 @@
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_ecr_repository\" \"sample_10\" {\n"
           ],
           [
-            2,
-            "  name                 = \"terratier-research-repository\"\n"
+            16,
+            "  name = \"terratier-sample-10\"\n"
           ],
           [
-            3,
-            "  image_tag_mutability = \"MUTABLE\"\n"
+            17,
+            "  image_tag_mutability = \"IMMUTABLE\"\n"
           ],
           [
-            4,
-            "\n"
+            18,
+            "  image_scanning_configuration { scan_on_push = true }\n"
           ],
           [
-            5,
-            "  image_scanning_configuration {\n"
+            19,
+            "  encryption_configuration { encryption_type = \"AES256\" }\n"
           ],
           [
-            6,
-            "    scan_on_push = false\n"
-          ],
-          [
-            7,
-            "  }\n"
-          ],
-          [
-            8,
-            "}"
+            20,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_10/main.tf",
         "repo_file_path": "/pilot_samples/sample_10/main.tf",
         "file_line_range": [
-          1,
-          8
+          15,
+          20
         ],
         "resource": "aws_ecr_repository.sample_10",
         "evaluations": null,
@@ -218,8 +68,8 @@
     ]
   },
   "summary": {
-    "passed": 0,
-    "failed": 3,
+    "passed": 3,
+    "failed": 1,
     "skipped": 0,
     "parsing_errors": 0,
     "resource_count": 1,

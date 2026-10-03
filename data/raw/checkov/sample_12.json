@@ -1,0 +1,80 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_23",
+        "bc_check_id": "BC_AWS_NETWORKING_31",
+        "check_name": "Ensure every security group and rule has a description",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "description",
+            "egress/[0]",
+            "ingress/[0]"
+          ]
+        },
+        "code_block": [
+          [
+            16,
+            "resource \"aws_security_group\" \"sample_12\" {\n"
+          ],
+          [
+            17,
+            "  name = \"terratier-sample-12\"\n"
+          ],
+          [
+            18,
+            "  description = \"Security group for TerraTier sample 12\"\n"
+          ],
+          [
+            19,
+            "  ingress { from_port = 443  to_port = 443  protocol = \"tcp\"  cidr_blocks = [\"10.0.0.0/8\"] }\n"
+          ],
+          [
+            20,
+            "  egress { from_port = 443  to_port = 443  protocol = \"tcp\"  cidr_blocks = [\"10.0.0.0/8\"] }\n"
+          ],
+          [
+            21,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_12/main.tf",
+        "repo_file_path": "/pilot_samples/sample_12/main.tf",
+        "file_line_range": [
+          16,
+          21
+        ],
+        "resource": "aws_security_group.sample_12",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupRuleDescription",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_12/main.tf"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 2,
+    "checkov_version": "3.3.17"
+  }
+}

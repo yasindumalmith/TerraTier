@@ -1,0 +1,87 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_119",
+        "bc_check_id": "BC_AWS_GENERAL_52",
+        "check_name": "Ensure DynamoDB Tables are encrypted using a KMS Customer Managed CMK",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "server_side_encryption/[0]/enabled",
+            "server_side_encryption/[0]/kms_key_arn"
+          ]
+        },
+        "code_block": [
+          [
+            15,
+            "resource \"aws_dynamodb_table\" \"sample_11\" {\n"
+          ],
+          [
+            16,
+            "  name = \"terratier-sample-11\"\n"
+          ],
+          [
+            17,
+            "  billing_mode = \"PAY_PER_REQUEST\"\n"
+          ],
+          [
+            18,
+            "  hash_key = \"id\"\n"
+          ],
+          [
+            19,
+            "  attribute { name = \"id\"  type = \"S\" }\n"
+          ],
+          [
+            20,
+            "  server_side_encryption { enabled = true }\n"
+          ],
+          [
+            21,
+            "  point_in_time_recovery { enabled = true }\n"
+          ],
+          [
+            22,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_11/main.tf",
+        "repo_file_path": "/pilot_samples/sample_11/main.tf",
+        "file_line_range": [
+          15,
+          22
+        ],
+        "resource": "aws_dynamodb_table.sample_11",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.DynamoDBTablesEncrypted",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-52",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_11/main.tf"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 1,
+    "checkov_version": "3.3.17"
+  }
+}

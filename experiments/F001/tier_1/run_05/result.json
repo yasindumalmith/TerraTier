@@ -21,12 +21,12 @@
       "severity": null,
       "file_path": "/main.tf",
       "file_line_range": [
-        1,
-        25
+        19,
+        36
       ]
     }
   ],
-  "original_failed_finding_count": 4,
-  "remediated_failed_finding_count": 3,
+  "original_failed_finding_count": 1,
+  "remediated_failed_finding_count": 0,
   "final_result": "PASS"
 }

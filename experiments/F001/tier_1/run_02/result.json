@@ -3,8 +3,8 @@
   "target_check_id": "CKV_AWS_24",
   "target_resource": "aws_security_group.sample_01",
   "fmt_pass": false,
-  "terraform_init_pass": false,
-  "terraform_valid": false,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
   "original_checkov_scan_success": true,
   "remediated_checkov_scan_success": true,
   "target_present_in_original": true,
@@ -21,12 +21,12 @@
       "severity": null,
       "file_path": "/main.tf",
       "file_line_range": [
-        1,
-        25
+        19,
+        36
       ]
     }
   ],
-  "original_failed_finding_count": 4,
-  "remediated_failed_finding_count": 3,
-  "final_result": "FAIL"
+  "original_failed_finding_count": 1,
+  "remediated_failed_finding_count": 0,
+  "final_result": "PASS"
 }

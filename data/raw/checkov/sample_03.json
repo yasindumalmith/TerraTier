@@ -3,91 +3,6 @@
   "results": {
     "failed_checks": [
       {
-        "check_id": "CKV_AWS_3",
-        "bc_check_id": "BC_AWS_GENERAL_3",
-        "check_name": "Ensure all data stored in the EBS is securely encrypted",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "encrypted"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_ebs_volume\" \"sample_03\" {\n"
-          ],
-          [
-            2,
-            "  availability_zone = \"us-east-1a\"\n"
-          ],
-          [
-            3,
-            "  size              = 20\n"
-          ],
-          [
-            4,
-            "  type              = \"gp3\"\n"
-          ],
-          [
-            5,
-            "\n"
-          ],
-          [
-            6,
-            "  encrypted = false\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "  tags = {\n"
-          ],
-          [
-            9,
-            "    Name = \"sample-03-unencrypted-volume\"\n"
-          ],
-          [
-            10,
-            "  }\n"
-          ],
-          [
-            11,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_03/main.tf",
-        "repo_file_path": "/pilot_samples/sample_03/main.tf",
-        "file_line_range": [
-          1,
-          11
-        ],
-        "resource": "aws_ebs_volume.sample_03",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.EBSEncryption",
-        "fixed_definition": null,
-        "entity_tags": {
-          "Name": "sample-03-unencrypted-volume"
-        },
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-3-encrypt-ebs-volume",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_03/main.tf"
-      },
-      {
         "check_id": "CKV_AWS_189",
         "bc_check_id": "BC_AWS_GENERAL_109",
         "check_name": "Ensure EBS Volume is encrypted by KMS using a customer managed Key (CMK)",
@@ -99,63 +14,47 @@
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_ebs_volume\" \"sample_03\" {\n"
           ],
           [
-            2,
+            16,
             "  availability_zone = \"us-east-1a\"\n"
           ],
           [
-            3,
-            "  size              = 20\n"
+            17,
+            "  size = 20\n"
           ],
           [
-            4,
-            "  type              = \"gp3\"\n"
+            18,
+            "  type = \"gp3\"\n"
           ],
           [
-            5,
-            "\n"
+            19,
+            "  encrypted = true\n"
           ],
           [
-            6,
-            "  encrypted = false\n"
+            20,
+            "  tags = { Name = \"terratier-sample-03\" }\n"
           ],
           [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "  tags = {\n"
-          ],
-          [
-            9,
-            "    Name = \"sample-03-unencrypted-volume\"\n"
-          ],
-          [
-            10,
-            "  }\n"
-          ],
-          [
-            11,
-            "}"
+            21,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_03/main.tf",
         "repo_file_path": "/pilot_samples/sample_03/main.tf",
         "file_line_range": [
-          1,
-          11
+          15,
+          21
         ],
         "resource": "aws_ebs_volume.sample_03",
         "evaluations": null,
         "check_class": "checkov.terraform.checks.resource.aws.EBSVolumeEncryptedWithCMK",
         "fixed_definition": null,
         "entity_tags": {
-          "Name": "sample-03-unencrypted-volume"
+          "Name": "terratier-sample-03"
         },
         "caller_file_path": null,
         "caller_file_line_range": null,
@@ -175,8 +74,8 @@
     ]
   },
   "summary": {
-    "passed": 1,
-    "failed": 2,
+    "passed": 3,
+    "failed": 1,
     "skipped": 0,
     "parsing_errors": 0,
     "resource_count": 1,

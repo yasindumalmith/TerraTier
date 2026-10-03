@@ -3,134 +3,6 @@
   "results": {
     "failed_checks": [
       {
-        "check_id": "CKV_AWS_62",
-        "bc_check_id": "BC_AWS_IAM_47",
-        "check_name": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy",
-            "inline_policy"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_iam_policy\" \"sample_02\" {\n"
-          ],
-          [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
-            16,
-            "        Resource = [\n"
-          ],
-          [
-            17,
-            "          \"*\"\n"
-          ],
-          [
-            18,
-            "        ]\n"
-          ],
-          [
-            19,
-            "      }\n"
-          ],
-          [
-            20,
-            "    ]\n"
-          ],
-          [
-            21,
-            "  })\n"
-          ],
-          [
-            22,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
-        "repo_file_path": "/pilot_samples/sample_02/main.tf",
-        "file_line_range": [
-          1,
-          22
-        ],
-        "resource": "aws_iam_policy.sample_02",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMAdminPolicyDocument",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
-      },
-      {
         "check_id": "CKV_AWS_287",
         "bc_check_id": "BC_AWS_IAM_82",
         "check_name": "Ensure IAM policies does not allow credentials exposure",
@@ -142,100 +14,64 @@
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_iam_policy\" \"sample_02\" {\n"
           ],
           [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
             16,
-            "        Resource = [\n"
+            "  name = \"terratier-sample-02\"\n"
           ],
           [
             17,
-            "          \"*\"\n"
+            "  description = \"Intentionally over-permissive IAM policy for TerraTier\"\n"
           ],
           [
             18,
-            "        ]\n"
+            "  policy = jsonencode({\n"
           ],
           [
             19,
-            "      }\n"
+            "    Version = \"2012-10-17\"\n"
           ],
           [
             20,
-            "    ]\n"
+            "    Statement = [{\n"
           ],
           [
             21,
-            "  })\n"
+            "      Sid = \"FullIAMAccess\"\n"
           ],
           [
             22,
-            "}"
+            "      Effect = \"Allow\"\n"
+          ],
+          [
+            23,
+            "      Action = \"iam:*\"\n"
+          ],
+          [
+            24,
+            "      Resource = \"*\"\n"
+          ],
+          [
+            25,
+            "    }]\n"
+          ],
+          [
+            26,
+            "  })\n"
+          ],
+          [
+            27,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
         "repo_file_path": "/pilot_samples/sample_02/main.tf",
         "file_line_range": [
-          1,
-          22
+          15,
+          27
         ],
         "resource": "aws_iam_policy.sample_02",
         "evaluations": null,
@@ -258,133 +94,6 @@
         "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
       },
       {
-        "check_id": "CKV_AWS_288",
-        "bc_check_id": "BC_AWS_IAM_83",
-        "check_name": "Ensure IAM policies does not allow data exfiltration",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy/Statement/[0]/Action"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_iam_policy\" \"sample_02\" {\n"
-          ],
-          [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
-            16,
-            "        Resource = [\n"
-          ],
-          [
-            17,
-            "          \"*\"\n"
-          ],
-          [
-            18,
-            "        ]\n"
-          ],
-          [
-            19,
-            "      }\n"
-          ],
-          [
-            20,
-            "    ]\n"
-          ],
-          [
-            21,
-            "  })\n"
-          ],
-          [
-            22,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
-        "repo_file_path": "/pilot_samples/sample_02/main.tf",
-        "file_line_range": [
-          1,
-          22
-        ],
-        "resource": "aws_iam_policy.sample_02",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMDataExfiltration",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
-      },
-      {
         "check_id": "CKV_AWS_289",
         "bc_check_id": "BC_AWS_IAM_84",
         "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
@@ -396,100 +105,64 @@
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_iam_policy\" \"sample_02\" {\n"
           ],
           [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
             16,
-            "        Resource = [\n"
+            "  name = \"terratier-sample-02\"\n"
           ],
           [
             17,
-            "          \"*\"\n"
+            "  description = \"Intentionally over-permissive IAM policy for TerraTier\"\n"
           ],
           [
             18,
-            "        ]\n"
+            "  policy = jsonencode({\n"
           ],
           [
             19,
-            "      }\n"
+            "    Version = \"2012-10-17\"\n"
           ],
           [
             20,
-            "    ]\n"
+            "    Statement = [{\n"
           ],
           [
             21,
-            "  })\n"
+            "      Sid = \"FullIAMAccess\"\n"
           ],
           [
             22,
-            "}"
+            "      Effect = \"Allow\"\n"
+          ],
+          [
+            23,
+            "      Action = \"iam:*\"\n"
+          ],
+          [
+            24,
+            "      Resource = \"*\"\n"
+          ],
+          [
+            25,
+            "    }]\n"
+          ],
+          [
+            26,
+            "  })\n"
+          ],
+          [
+            27,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
         "repo_file_path": "/pilot_samples/sample_02/main.tf",
         "file_line_range": [
-          1,
-          22
+          15,
+          27
         ],
         "resource": "aws_iam_policy.sample_02",
         "evaluations": null,
@@ -523,100 +196,64 @@
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_iam_policy\" \"sample_02\" {\n"
           ],
           [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
             16,
-            "        Resource = [\n"
+            "  name = \"terratier-sample-02\"\n"
           ],
           [
             17,
-            "          \"*\"\n"
+            "  description = \"Intentionally over-permissive IAM policy for TerraTier\"\n"
           ],
           [
             18,
-            "        ]\n"
+            "  policy = jsonencode({\n"
           ],
           [
             19,
-            "      }\n"
+            "    Version = \"2012-10-17\"\n"
           ],
           [
             20,
-            "    ]\n"
+            "    Statement = [{\n"
           ],
           [
             21,
-            "  })\n"
+            "      Sid = \"FullIAMAccess\"\n"
           ],
           [
             22,
-            "}"
+            "      Effect = \"Allow\"\n"
+          ],
+          [
+            23,
+            "      Action = \"iam:*\"\n"
+          ],
+          [
+            24,
+            "      Resource = \"*\"\n"
+          ],
+          [
+            25,
+            "    }]\n"
+          ],
+          [
+            26,
+            "  })\n"
+          ],
+          [
+            27,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
         "repo_file_path": "/pilot_samples/sample_02/main.tf",
         "file_line_range": [
-          1,
-          22
+          15,
+          27
         ],
         "resource": "aws_iam_policy.sample_02",
         "evaluations": null,
@@ -639,134 +276,6 @@
         "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
       },
       {
-        "check_id": "CKV_AWS_63",
-        "bc_check_id": "BC_AWS_IAM_48",
-        "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy",
-            "inline_policy"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_iam_policy\" \"sample_02\" {\n"
-          ],
-          [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
-            16,
-            "        Resource = [\n"
-          ],
-          [
-            17,
-            "          \"*\"\n"
-          ],
-          [
-            18,
-            "        ]\n"
-          ],
-          [
-            19,
-            "      }\n"
-          ],
-          [
-            20,
-            "    ]\n"
-          ],
-          [
-            21,
-            "  })\n"
-          ],
-          [
-            22,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
-        "repo_file_path": "/pilot_samples/sample_02/main.tf",
-        "file_line_range": [
-          1,
-          22
-        ],
-        "resource": "aws_iam_policy.sample_02",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMStarActionPolicyDocument",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-48",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
-      },
-      {
         "check_id": "CKV_AWS_355",
         "bc_check_id": "BC_AWS_IAM_88",
         "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
@@ -778,100 +287,64 @@
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_iam_policy\" \"sample_02\" {\n"
           ],
           [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
             16,
-            "        Resource = [\n"
+            "  name = \"terratier-sample-02\"\n"
           ],
           [
             17,
-            "          \"*\"\n"
+            "  description = \"Intentionally over-permissive IAM policy for TerraTier\"\n"
           ],
           [
             18,
-            "        ]\n"
+            "  policy = jsonencode({\n"
           ],
           [
             19,
-            "      }\n"
+            "    Version = \"2012-10-17\"\n"
           ],
           [
             20,
-            "    ]\n"
+            "    Statement = [{\n"
           ],
           [
             21,
-            "  })\n"
+            "      Sid = \"FullIAMAccess\"\n"
           ],
           [
             22,
-            "}"
+            "      Effect = \"Allow\"\n"
+          ],
+          [
+            23,
+            "      Action = \"iam:*\"\n"
+          ],
+          [
+            24,
+            "      Resource = \"*\"\n"
+          ],
+          [
+            25,
+            "    }]\n"
+          ],
+          [
+            26,
+            "  })\n"
+          ],
+          [
+            27,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
         "repo_file_path": "/pilot_samples/sample_02/main.tf",
         "file_line_range": [
-          1,
-          22
+          15,
+          27
         ],
         "resource": "aws_iam_policy.sample_02",
         "evaluations": null,
@@ -894,133 +367,6 @@
         "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
       },
       {
-        "check_id": "CKV_AWS_290",
-        "bc_check_id": "BC_AWS_IAM_85",
-        "check_name": "Ensure IAM policies does not allow write access without constraints",
-        "check_result": {
-          "result": "FAILED",
-          "evaluated_keys": [
-            "policy/Statement/[0]/Action"
-          ]
-        },
-        "code_block": [
-          [
-            1,
-            "resource \"aws_iam_policy\" \"sample_02\" {\n"
-          ],
-          [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
-            16,
-            "        Resource = [\n"
-          ],
-          [
-            17,
-            "          \"*\"\n"
-          ],
-          [
-            18,
-            "        ]\n"
-          ],
-          [
-            19,
-            "      }\n"
-          ],
-          [
-            20,
-            "    ]\n"
-          ],
-          [
-            21,
-            "  })\n"
-          ],
-          [
-            22,
-            "}"
-          ]
-        ],
-        "file_path": "/main.tf",
-        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
-        "repo_file_path": "/pilot_samples/sample_02/main.tf",
-        "file_line_range": [
-          1,
-          22
-        ],
-        "resource": "aws_iam_policy.sample_02",
-        "evaluations": null,
-        "check_class": "checkov.terraform.checks.resource.aws.IAMWriteAccess",
-        "fixed_definition": null,
-        "entity_tags": null,
-        "caller_file_path": null,
-        "caller_file_line_range": null,
-        "resource_address": null,
-        "severity": null,
-        "bc_category": null,
-        "benchmarks": null,
-        "description": null,
-        "short_description": null,
-        "vulnerability_details": null,
-        "connected_node": null,
-        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290",
-        "details": [],
-        "check_len": null,
-        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf"
-      },
-      {
         "check_id": "CKV2_AWS_40",
         "bc_check_id": "BC_AWS_IAM_73",
         "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
@@ -1029,136 +375,98 @@
           "entity": {
             "aws_iam_policy": {
               "sample_02": {
-                "__end_line__": 22,
-                "__start_line__": 1,
+                "__end_line__": 27,
+                "__start_line__": 15,
                 "description": [
-                  "Research sample with excessive permissions"
+                  "Intentionally over-permissive IAM policy for TerraTier"
                 ],
                 "name": [
-                  "sample-02-admin-policy"
+                  "terratier-sample-02"
                 ],
                 "policy": [
                   {
                     "Version": "2012-10-17",
                     "Statement": [
                       {
+                        "Sid": "FullIAMAccess",
                         "Effect": "Allow",
-                        "Action": [
-                          "*"
-                        ],
-                        "Resource": [
-                          "*"
-                        ]
+                        "Action": "iam:*",
+                        "Resource": "*"
                       }
                     ]
                   }
                 ],
-                "__address__": "aws_iam_policy.sample_02"
+                "__address__": "aws_iam_policy.sample_02",
+                "__provider_address__": "aws.default"
               }
             }
           },
           "evaluated_keys": [
-            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
             "statement[?(@/effect == Allow)]/actions[*]",
+            "policy/Statement[?(@/Effect == Allow)]/Action[*]",
             "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
           ]
         },
         "code_block": [
           [
-            1,
+            15,
             "resource \"aws_iam_policy\" \"sample_02\" {\n"
           ],
           [
-            2,
-            "  name        = \"sample-02-admin-policy\"\n"
-          ],
-          [
-            3,
-            "  description = \"Research sample with excessive permissions\"\n"
-          ],
-          [
-            4,
-            "\n"
-          ],
-          [
-            5,
-            "  policy = jsonencode({\n"
-          ],
-          [
-            6,
-            "    Version = \"2012-10-17\"\n"
-          ],
-          [
-            7,
-            "\n"
-          ],
-          [
-            8,
-            "    Statement = [\n"
-          ],
-          [
-            9,
-            "      {\n"
-          ],
-          [
-            10,
-            "        Effect = \"Allow\"\n"
-          ],
-          [
-            11,
-            "\n"
-          ],
-          [
-            12,
-            "        Action = [\n"
-          ],
-          [
-            13,
-            "          \"*\"\n"
-          ],
-          [
-            14,
-            "        ]\n"
-          ],
-          [
-            15,
-            "\n"
-          ],
-          [
             16,
-            "        Resource = [\n"
+            "  name = \"terratier-sample-02\"\n"
           ],
           [
             17,
-            "          \"*\"\n"
+            "  description = \"Intentionally over-permissive IAM policy for TerraTier\"\n"
           ],
           [
             18,
-            "        ]\n"
+            "  policy = jsonencode({\n"
           ],
           [
             19,
-            "      }\n"
+            "    Version = \"2012-10-17\"\n"
           ],
           [
             20,
-            "    ]\n"
+            "    Statement = [{\n"
           ],
           [
             21,
-            "  })\n"
+            "      Sid = \"FullIAMAccess\"\n"
           ],
           [
             22,
-            "}"
+            "      Effect = \"Allow\"\n"
+          ],
+          [
+            23,
+            "      Action = \"iam:*\"\n"
+          ],
+          [
+            24,
+            "      Resource = \"*\"\n"
+          ],
+          [
+            25,
+            "    }]\n"
+          ],
+          [
+            26,
+            "  })\n"
+          ],
+          [
+            27,
+            "}\n"
           ]
         ],
         "file_path": "/main.tf",
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_02/main.tf",
         "repo_file_path": "/pilot_samples/sample_02/main.tf",
         "file_line_range": [
-          1,
-          22
+          15,
+          27
         ],
         "resource": "aws_iam_policy.sample_02",
         "evaluations": null,
@@ -1183,8 +491,8 @@
     ]
   },
   "summary": {
-    "passed": 0,
-    "failed": 9,
+    "passed": 5,
+    "failed": 5,
     "skipped": 0,
     "parsing_errors": 0,
     "resource_count": 1,

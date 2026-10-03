@@ -1,0 +1,44 @@
+{
+  "finding_id": "F003",
+  "target_check_id": "CKV_AWS_189",
+  "target_resource": "aws_ebs_volume.sample_03",
+  "fmt_pass": true,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "target_present_in_original": true,
+  "target_finding_removed": true,
+  "resource_preserved": true,
+  "suppression_added": false,
+  "added_suppressions": [],
+  "new_findings": [
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "aws_kms_key.ebs_key",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        19
+      ]
+    }
+  ],
+  "removed_findings": [
+    {
+      "check_id": "CKV_AWS_189",
+      "check_name": "Ensure EBS Volume is encrypted by KMS using a customer managed Key (CMK)",
+      "resource": "aws_ebs_volume.sample_03",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        21
+      ]
+    }
+  ],
+  "original_failed_finding_count": 1,
+  "remediated_failed_finding_count": 1,
+  "final_result": "PASS"
+}

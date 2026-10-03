@@ -1,0 +1,44 @@
+{
+  "finding_id": "F010",
+  "target_check_id": "CKV_AWS_136",
+  "target_resource": "aws_ecr_repository.sample_10",
+  "fmt_pass": true,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "target_present_in_original": true,
+  "target_finding_removed": true,
+  "resource_preserved": true,
+  "suppression_added": false,
+  "added_suppressions": [],
+  "new_findings": [
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "aws_kms_key.ecr_sample_10",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        18
+      ]
+    }
+  ],
+  "removed_findings": [
+    {
+      "check_id": "CKV_AWS_136",
+      "check_name": "Ensure that ECR repositories are encrypted using KMS",
+      "resource": "aws_ecr_repository.sample_10",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        20
+      ]
+    }
+  ],
+  "original_failed_finding_count": 1,
+  "remediated_failed_finding_count": 1,
+  "final_result": "PASS"
+}

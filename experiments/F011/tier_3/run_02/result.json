@@ -1,0 +1,44 @@
+{
+  "finding_id": "F011",
+  "target_check_id": "CKV_AWS_119",
+  "target_resource": "aws_dynamodb_table.sample_11",
+  "fmt_pass": false,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "target_present_in_original": true,
+  "target_finding_removed": true,
+  "resource_preserved": true,
+  "suppression_added": false,
+  "added_suppressions": [],
+  "new_findings": [
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "aws_kms_key.sample_11",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        19
+      ]
+    }
+  ],
+  "removed_findings": [
+    {
+      "check_id": "CKV_AWS_119",
+      "check_name": "Ensure DynamoDB Tables are encrypted using a KMS Customer Managed CMK",
+      "resource": "aws_dynamodb_table.sample_11",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        25
+      ]
+    }
+  ],
+  "original_failed_finding_count": 1,
+  "remediated_failed_finding_count": 1,
+  "final_result": "PASS"
+}

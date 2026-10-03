@@ -1,0 +1,65 @@
+{
+  "finding_id": "F002",
+  "target_check_id": "CKV2_AWS_40",
+  "target_resource": "aws_iam_policy.sample_02",
+  "fmt_pass": false,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "target_present_in_original": true,
+  "target_finding_removed": true,
+  "resource_preserved": true,
+  "suppression_added": false,
+  "added_suppressions": [],
+  "new_findings": [],
+  "removed_findings": [
+    {
+      "check_id": "CKV2_AWS_40",
+      "check_name": "Ensure AWS IAM policy does not allow full IAM privileges",
+      "resource": "aws_iam_policy.sample_02",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        27
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_286",
+      "check_name": "Ensure IAM policies does not allow privilege escalation",
+      "resource": "aws_iam_policy.sample_02",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        27
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_287",
+      "check_name": "Ensure IAM policies does not allow credentials exposure",
+      "resource": "aws_iam_policy.sample_02",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        27
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_289",
+      "check_name": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+      "resource": "aws_iam_policy.sample_02",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        15,
+        27
+      ]
+    }
+  ],
+  "original_failed_finding_count": 5,
+  "remediated_failed_finding_count": 1,
+  "final_result": "PASS"
+}
