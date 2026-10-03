@@ -31,18 +31,42 @@
           ],
           [
             33,
-            "  attribute { name = \"id\"  type = \"S\" }\n"
+            "  attribute { \n"
           ],
           [
             34,
-            "  server_side_encryption { enabled = true  kms_key_arn = aws_kms_key.sample_04.arn }\n"
+            "    name = \"id\"  \n"
           ],
           [
             35,
-            "  point_in_time_recovery { enabled = false }\n"
+            "    type = \"S\" \n"
           ],
           [
             36,
+            "    }\n"
+          ],
+          [
+            37,
+            "  server_side_encryption { \n"
+          ],
+          [
+            38,
+            "    enabled = true  \n"
+          ],
+          [
+            39,
+            "    kms_key_arn = aws_kms_key.sample_04.arn \n"
+          ],
+          [
+            40,
+            "    }\n"
+          ],
+          [
+            41,
+            "  point_in_time_recovery { enabled = false }\n"
+          ],
+          [
+            42,
             "}\n"
           ]
         ],
@@ -51,7 +75,7 @@
         "repo_file_path": "/pilot_samples/sample_04/main.tf",
         "file_line_range": [
           29,
-          36
+          42
         ],
         "resource": "aws_dynamodb_table.sample_04",
         "evaluations": null,

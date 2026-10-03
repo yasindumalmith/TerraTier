@@ -1,0 +1,186 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_189",
+        "bc_check_id": "BC_AWS_GENERAL_109",
+        "check_name": "Ensure EBS Volume is encrypted by KMS using a customer managed Key (CMK)",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "kms_key_id"
+          ]
+        },
+        "code_block": [
+          [
+            26,
+            "resource \"aws_ebs_volume\" \"sample_15\" {\n"
+          ],
+          [
+            27,
+            "  availability_zone = var.availability_zone\n"
+          ],
+          [
+            28,
+            "  size              = var.volume_size\n"
+          ],
+          [
+            29,
+            "  type              = \"gp3\"\n"
+          ],
+          [
+            30,
+            "  encrypted         = true\n"
+          ],
+          [
+            31,
+            "\n"
+          ],
+          [
+            32,
+            "  tags = {\n"
+          ],
+          [
+            33,
+            "    Name = \"terratier-sample-15-volume\"\n"
+          ],
+          [
+            34,
+            "  }\n"
+          ],
+          [
+            35,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_15/main.tf",
+        "repo_file_path": "/pilot_samples/sample_15/main.tf",
+        "file_line_range": [
+          26,
+          35
+        ],
+        "resource": "aws_ebs_volume.sample_15",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.EBSVolumeEncryptedWithCMK",
+        "fixed_definition": null,
+        "entity_tags": {
+          "Name": "terratier-sample-15-volume"
+        },
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-109",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_15/main.tf",
+        "breadcrumbs": {
+          "availability_zone": [
+            {
+              "type": "variable",
+              "name": "availability_zone",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_15/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "size": [
+            {
+              "type": "variable",
+              "name": "volume_size",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_15/variables.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      },
+      {
+        "check_id": "CKV2_AWS_64",
+        "bc_check_id": "BC_AWS_IAM_76",
+        "check_name": "Ensure KMS key Policy is defined",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_kms_key": {
+              "storage": {
+                "__end_line__": 19,
+                "__start_line__": 16,
+                "description": [
+                  "KMS key available for application storage"
+                ],
+                "enable_key_rotation": [
+                  true
+                ],
+                "__address__": "aws_kms_key.storage",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "policy"
+          ]
+        },
+        "code_block": [
+          [
+            16,
+            "resource \"aws_kms_key\" \"storage\" {\n"
+          ],
+          [
+            17,
+            "  description         = \"KMS key available for application storage\"\n"
+          ],
+          [
+            18,
+            "  enable_key_rotation = true\n"
+          ],
+          [
+            19,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_15/main.tf",
+        "repo_file_path": "/pilot_samples/sample_15/main.tf",
+        "file_line_range": [
+          16,
+          19
+        ],
+        "resource": "aws_kms_key.storage",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-64",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_15/main.tf"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 6,
+    "failed": 2,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 3,
+    "checkov_version": "3.3.17"
+  }
+}

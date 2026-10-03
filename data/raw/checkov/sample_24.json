@@ -1,0 +1,187 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_23",
+        "bc_check_id": "BC_AWS_NETWORKING_31",
+        "check_name": "Ensure every security group and rule has a description",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "egress/[0]",
+            "ingress/[0]"
+          ]
+        },
+        "code_block": [
+          [
+            16,
+            "resource \"aws_security_group\" \"sample_24\" {\n"
+          ],
+          [
+            17,
+            "  name   = \"terratier-sample-24\"\n"
+          ],
+          [
+            18,
+            "  vpc_id = var.vpc_id\n"
+          ],
+          [
+            19,
+            "\n"
+          ],
+          [
+            20,
+            "  ingress {\n"
+          ],
+          [
+            21,
+            "    from_port   = 443\n"
+          ],
+          [
+            22,
+            "    to_port     = 443\n"
+          ],
+          [
+            23,
+            "    protocol    = \"tcp\"\n"
+          ],
+          [
+            24,
+            "    cidr_blocks = [var.application_cidr]\n"
+          ],
+          [
+            25,
+            "  }\n"
+          ],
+          [
+            26,
+            "\n"
+          ],
+          [
+            27,
+            "  egress {\n"
+          ],
+          [
+            28,
+            "    from_port   = 443\n"
+          ],
+          [
+            29,
+            "    to_port     = 443\n"
+          ],
+          [
+            30,
+            "    protocol    = \"tcp\"\n"
+          ],
+          [
+            31,
+            "    cidr_blocks = [var.egress_cidr]\n"
+          ],
+          [
+            32,
+            "  }\n"
+          ],
+          [
+            33,
+            "\n"
+          ],
+          [
+            34,
+            "  tags = {\n"
+          ],
+          [
+            35,
+            "    Name = \"terratier-sample-24\"\n"
+          ],
+          [
+            36,
+            "  }\n"
+          ],
+          [
+            37,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/main.tf",
+        "repo_file_path": "/pilot_samples/sample_24/main.tf",
+        "file_line_range": [
+          16,
+          37
+        ],
+        "resource": "aws_security_group.sample_24",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupRuleDescription",
+        "fixed_definition": null,
+        "entity_tags": {
+          "Name": "terratier-sample-24"
+        },
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/main.tf",
+        "breadcrumbs": {
+          "vpc_id": [
+            {
+              "type": "variable",
+              "name": "vpc_id",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "ingress.cidr_blocks.0": [
+            {
+              "type": "variable",
+              "name": "application_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "ingress.cidr_blocks": [
+            {
+              "type": "variable",
+              "name": "application_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "egress.cidr_blocks.0": [
+            {
+              "type": "variable",
+              "name": "egress_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "egress.cidr_blocks": [
+            {
+              "type": "variable",
+              "name": "egress_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_24/variables.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 2,
+    "checkov_version": "3.3.17"
+  }
+}

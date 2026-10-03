@@ -1,0 +1,118 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_136",
+        "bc_check_id": "BC_AWS_GENERAL_53",
+        "check_name": "Ensure that ECR repositories are encrypted using KMS",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "encryption_configuration/[0]/encryption_type"
+          ]
+        },
+        "code_block": [
+          [
+            16,
+            "resource \"aws_ecr_repository\" \"sample_22\" {\n"
+          ],
+          [
+            17,
+            "  name                 = var.repository_name\n"
+          ],
+          [
+            18,
+            "  image_tag_mutability = \"IMMUTABLE\"\n"
+          ],
+          [
+            19,
+            "\n"
+          ],
+          [
+            20,
+            "  image_scanning_configuration {\n"
+          ],
+          [
+            21,
+            "    scan_on_push = true\n"
+          ],
+          [
+            22,
+            "  }\n"
+          ],
+          [
+            23,
+            "\n"
+          ],
+          [
+            24,
+            "  encryption_configuration {\n"
+          ],
+          [
+            25,
+            "    encryption_type = \"AES256\"\n"
+          ],
+          [
+            26,
+            "  }\n"
+          ],
+          [
+            27,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_22/main.tf",
+        "repo_file_path": "/pilot_samples/sample_22/main.tf",
+        "file_line_range": [
+          16,
+          27
+        ],
+        "resource": "aws_ecr_repository.sample_22",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.ECRRepositoryEncrypted",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ecr-repositories-are-encrypted",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_22/main.tf",
+        "breadcrumbs": {
+          "name": [
+            {
+              "type": "variable",
+              "name": "repository_name",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_22/variables.tf",
+              "module_connection": false
+            },
+            {
+              "type": "resource",
+              "name": "aws_ecr_repository.sample_22",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_22/main.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "summary": {
+    "passed": 12,
+    "failed": 1,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 3,
+    "checkov_version": "3.3.17"
+  }
+}

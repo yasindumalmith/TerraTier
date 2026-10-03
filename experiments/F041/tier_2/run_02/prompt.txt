@@ -1,0 +1,141 @@
+You are remediating a specific security finding in Terraform Infrastructure-as-Code.
+
+## Target Finding
+
+Finding ID: F041
+Checkov Check ID: CKV_AWS_119
+Checkov Check Name: Ensure DynamoDB Tables are encrypted using a KMS Customer Managed CMK
+Affected Resource: aws_dynamodb_table.sample_27
+Resource Type: aws_dynamodb_table
+
+## Terraform Configuration
+
+# File: kms.tf
+resource "aws_kms_key" "application" {
+  description         = "KMS key for application data"
+  enable_key_rotation = true
+
+  tags = {
+    Purpose = "application-data"
+  }
+}
+
+resource "aws_kms_key" "logging" {
+  description         = "KMS key used only for logging"
+  enable_key_rotation = true
+
+  tags = {
+    Purpose = "logging"
+  }
+}
+
+resource "aws_kms_alias" "application" {
+  name          = "alias/${var.environment}-application-data"
+  target_key_id = aws_kms_key.application.key_id
+}
+
+resource "aws_kms_alias" "logging" {
+  name          = "alias/${var.environment}-logging"
+  target_key_id = aws_kms_key.logging.key_id
+}
+
+# File: locals.tf
+locals {
+  table_config = {
+    name        = "${var.environment}-${var.table_name}"
+    billing     = "PAY_PER_REQUEST"
+    hash_key    = "id"
+  }
+
+  encryption_keys = {
+    application = aws_kms_key.application.arn
+    logging     = aws_kms_key.logging.arn
+  }
+}
+
+# File: main.tf
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_dynamodb_table" "sample_27" {
+  name         = local.table_config.name
+  billing_mode = local.table_config.billing
+  hash_key     = local.table_config.hash_key
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery {
+    enabled = true
+  }
+
+  server_side_encryption {
+    enabled = true
+
+    # Intentionally missing customer-managed KMS key.
+    # Expected Checkov finding: CKV_AWS_119
+  }
+
+  tags = {
+    Environment = var.environment
+    Application = "order-service"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "application" {
+  name              = "/${var.environment}/orders"
+  retention_in_days = 365
+  kms_key_id        = local.encryption_keys.logging
+}
+
+# File: variables.tf
+variable "environment" {
+  type    = string
+  default = "prod"
+}
+
+variable "table_name" {
+  type    = string
+  default = "orders"
+}
+
+## Task
+
+Modify the Terraform configuration to remediate ONLY the target security finding identified above.
+
+Follow these requirements:
+
+1. Make the minimum necessary security change.
+2. Preserve the intended infrastructure functionality as much as possible.
+3. Do not delete the affected resource simply to remove the finding.
+4. Do not add Checkov skip comments, suppression directives, or other mechanisms that bypass security scanning.
+5. Do not intentionally modify unrelated resources or unrelated security findings.
+6. Preserve existing variable references, resource relationships, and configuration structure unless changing them is necessary for the remediation.
+7. Produce syntactically valid Terraform/HCL.
+8. Do not invent unnecessary resources, values, or dependencies.
+9. If additional Terraform configuration is genuinely required to remediate the finding, add only what is necessary.
+10. Do not explain the solution.
+
+## Output Format
+
+Return only the complete corrected Terraform configuration.
+
+Do not include:
+
+- Markdown code fences
+- Explanations
+- Comments describing your reasoning
+- Checkov suppression comments
+- Any text before or after the Terraform code

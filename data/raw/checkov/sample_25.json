@@ -1,0 +1,209 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_24",
+        "bc_check_id": "BC_AWS_NETWORKING_1",
+        "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "ingress/[0]/from_port",
+            "ingress/[0]/to_port",
+            "ingress/[0]/cidr_blocks",
+            "ingress/[0]/ipv6_cidr_blocks"
+          ]
+        },
+        "code_block": [
+          [
+            24,
+            "resource \"aws_security_group\" \"sample_25\" {\n"
+          ],
+          [
+            25,
+            "  name        = \"terratier-sample-25\"\n"
+          ],
+          [
+            26,
+            "  description = \"Administrative access for a private workload\"\n"
+          ],
+          [
+            27,
+            "  vpc_id      = var.vpc_id\n"
+          ],
+          [
+            28,
+            "\n"
+          ],
+          [
+            29,
+            "  ingress {\n"
+          ],
+          [
+            30,
+            "    description = \"SSH administration\"\n"
+          ],
+          [
+            31,
+            "    from_port   = 22\n"
+          ],
+          [
+            32,
+            "    to_port     = 22\n"
+          ],
+          [
+            33,
+            "    protocol    = \"tcp\"\n"
+          ],
+          [
+            34,
+            "    cidr_blocks = local.administrative_cidrs\n"
+          ],
+          [
+            35,
+            "  }\n"
+          ],
+          [
+            36,
+            "\n"
+          ],
+          [
+            37,
+            "  egress {\n"
+          ],
+          [
+            38,
+            "    description = \"HTTPS to internal services\"\n"
+          ],
+          [
+            39,
+            "    from_port   = 443\n"
+          ],
+          [
+            40,
+            "    to_port     = 443\n"
+          ],
+          [
+            41,
+            "    protocol    = \"tcp\"\n"
+          ],
+          [
+            42,
+            "    cidr_blocks = [var.internal_cidr]\n"
+          ],
+          [
+            43,
+            "  }\n"
+          ],
+          [
+            44,
+            "\n"
+          ],
+          [
+            45,
+            "  tags = merge(local.common_tags, {\n"
+          ],
+          [
+            46,
+            "    Name = \"terratier-sample-25\"\n"
+          ],
+          [
+            47,
+            "  })\n"
+          ],
+          [
+            48,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/main.tf",
+        "repo_file_path": "/pilot_samples/sample_25/main.tf",
+        "file_line_range": [
+          24,
+          48
+        ],
+        "resource": "aws_security_group.sample_25",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupUnrestrictedIngress22",
+        "fixed_definition": null,
+        "entity_tags": {
+          "Environment": "research",
+          "ManagedBy": "Terraform",
+          "Name": "terratier-sample-25"
+        },
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/main.tf",
+        "breadcrumbs": {
+          "vpc_id": [
+            {
+              "type": "variable",
+              "name": "vpc_id",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "egress.cidr_blocks.0": [
+            {
+              "type": "variable",
+              "name": "internal_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "egress.cidr_blocks": [
+            {
+              "type": "variable",
+              "name": "internal_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "tags": [
+            {
+              "type": "locals",
+              "name": "common_tags",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/main.tf",
+              "module_connection": false
+            }
+          ],
+          "ingress.cidr_blocks": [
+            {
+              "type": "variable",
+              "name": "admin_cidr",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/variables.tf",
+              "module_connection": false
+            },
+            {
+              "type": "locals",
+              "name": "administrative_cidrs",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_25/main.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 2,
+    "checkov_version": "3.3.17"
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_119",
+        "bc_check_id": "BC_AWS_GENERAL_52",
+        "check_name": "Ensure DynamoDB Tables are encrypted using a KMS Customer Managed CMK",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "server_side_encryption/[0]/enabled",
+            "server_side_encryption/[0]/kms_key_arn"
+          ]
+        },
+        "code_block": [
+          [
+            26,
+            "resource \"aws_dynamodb_table\" \"sample_23\" {\n"
+          ],
+          [
+            27,
+            "  name         = var.table_name\n"
+          ],
+          [
+            28,
+            "  billing_mode = \"PAY_PER_REQUEST\"\n"
+          ],
+          [
+            29,
+            "  hash_key     = \"id\"\n"
+          ],
+          [
+            30,
+            "\n"
+          ],
+          [
+            31,
+            "  attribute {\n"
+          ],
+          [
+            32,
+            "    name = \"id\"\n"
+          ],
+          [
+            33,
+            "    type = \"S\"\n"
+          ],
+          [
+            34,
+            "  }\n"
+          ],
+          [
+            35,
+            "\n"
+          ],
+          [
+            36,
+            "  point_in_time_recovery {\n"
+          ],
+          [
+            37,
+            "    enabled = true\n"
+          ],
+          [
+            38,
+            "  }\n"
+          ],
+          [
+            39,
+            "\n"
+          ],
+          [
+            40,
+            "  server_side_encryption {\n"
+          ],
+          [
+            41,
+            "    enabled = true\n"
+          ],
+          [
+            42,
+            "  }\n"
+          ],
+          [
+            43,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_23/main.tf",
+        "repo_file_path": "/pilot_samples/sample_23/main.tf",
+        "file_line_range": [
+          26,
+          43
+        ],
+        "resource": "aws_dynamodb_table.sample_23",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.DynamoDBTablesEncrypted",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-52",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_23/main.tf",
+        "breadcrumbs": {
+          "name": [
+            {
+              "type": "variable",
+              "name": "table_name",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_23/variables.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      },
+      {
+        "check_id": "CKV2_AWS_64",
+        "bc_check_id": "BC_AWS_IAM_76",
+        "check_name": "Ensure KMS key Policy is defined",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_kms_key": {
+              "database": {
+                "__end_line__": 19,
+                "__start_line__": 16,
+                "description": [
+                  "Customer-managed key available for sample 23"
+                ],
+                "enable_key_rotation": [
+                  true
+                ],
+                "__address__": "aws_kms_key.database",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "policy"
+          ]
+        },
+        "code_block": [
+          [
+            16,
+            "resource \"aws_kms_key\" \"database\" {\n"
+          ],
+          [
+            17,
+            "  description         = \"Customer-managed key available for sample 23\"\n"
+          ],
+          [
+            18,
+            "  enable_key_rotation = true\n"
+          ],
+          [
+            19,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_23/main.tf",
+        "repo_file_path": "/pilot_samples/sample_23/main.tf",
+        "file_line_range": [
+          16,
+          19
+        ],
+        "resource": "aws_kms_key.database",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-64",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_23/main.tf"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 6,
+    "failed": 2,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 3,
+    "checkov_version": "3.3.17"
+  }
+}

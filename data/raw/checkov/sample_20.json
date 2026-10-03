@@ -1,0 +1,194 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_51",
+        "bc_check_id": "BC_AWS_GENERAL_24",
+        "check_name": "Ensure ECR Image Tags are immutable",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "image_tag_mutability"
+          ]
+        },
+        "code_block": [
+          [
+            21,
+            "resource \"aws_ecr_repository\" \"sample_20\" {\n"
+          ],
+          [
+            22,
+            "  name                 = var.repository_name\n"
+          ],
+          [
+            23,
+            "  image_tag_mutability = \"MUTABLE\"\n"
+          ],
+          [
+            24,
+            "\n"
+          ],
+          [
+            25,
+            "  image_scanning_configuration {\n"
+          ],
+          [
+            26,
+            "    scan_on_push = true\n"
+          ],
+          [
+            27,
+            "  }\n"
+          ],
+          [
+            28,
+            "\n"
+          ],
+          [
+            29,
+            "  encryption_configuration {\n"
+          ],
+          [
+            30,
+            "    encryption_type = \"KMS\"\n"
+          ],
+          [
+            31,
+            "    kms_key         = aws_kms_key.ecr.arn\n"
+          ],
+          [
+            32,
+            "  }\n"
+          ],
+          [
+            33,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_20/main.tf",
+        "repo_file_path": "/pilot_samples/sample_20/main.tf",
+        "file_line_range": [
+          21,
+          33
+        ],
+        "resource": "aws_ecr_repository.sample_20",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.ECRImmutableTags",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-24",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_20/main.tf",
+        "breadcrumbs": {
+          "name": [
+            {
+              "type": "variable",
+              "name": "repository_name",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_20/variables.tf",
+              "module_connection": false
+            },
+            {
+              "type": "resource",
+              "name": "aws_ecr_repository.sample_20",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_20/main.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      },
+      {
+        "check_id": "CKV2_AWS_64",
+        "bc_check_id": "BC_AWS_IAM_76",
+        "check_name": "Ensure KMS key Policy is defined",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_kms_key": {
+              "ecr": {
+                "__end_line__": 19,
+                "__start_line__": 16,
+                "description": [
+                  "KMS key for ECR sample 20"
+                ],
+                "enable_key_rotation": [
+                  true
+                ],
+                "__address__": "aws_kms_key.ecr",
+                "__provider_address__": "aws.default"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "policy",
+            "resource_type"
+          ]
+        },
+        "code_block": [
+          [
+            16,
+            "resource \"aws_kms_key\" \"ecr\" {\n"
+          ],
+          [
+            17,
+            "  description         = \"KMS key for ECR sample 20\"\n"
+          ],
+          [
+            18,
+            "  enable_key_rotation = true\n"
+          ],
+          [
+            19,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_20/main.tf",
+        "repo_file_path": "/pilot_samples/sample_20/main.tf",
+        "file_line_range": [
+          16,
+          19
+        ],
+        "resource": "aws_kms_key.ecr",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": null,
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-64",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_20/main.tf"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 6,
+    "failed": 2,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 3,
+    "checkov_version": "3.3.17"
+  }
+}

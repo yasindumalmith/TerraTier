@@ -402,9 +402,9 @@
             }
           },
           "evaluated_keys": [
-            "statement[?(@/effect == Allow)]/actions[*]",
+            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]",
             "policy/Statement[?(@/Effect == Allow)]/Action[*]",
-            "inline_policy/Statement[?(@/Effect == Allow)]/Action[*]"
+            "statement[?(@/effect == Allow)]/actions[*]"
           ]
         },
         "code_block": [

@@ -1,0 +1,209 @@
+{
+  "finding_id": "F042",
+  "target_check_id": "CKV_AWS_355",
+  "target_resource": "aws_iam_policy.worker",
+  "fmt_pass": true,
+  "terraform_init_pass": false,
+  "terraform_valid": false,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "target_present_in_original": true,
+  "target_finding_removed": true,
+  "resource_preserved": true,
+  "suppression_added": false,
+  "added_suppressions": [],
+  "new_findings": [
+    {
+      "check_id": "CKV2_AWS_6",
+      "check_name": "Ensure that S3 bucket has a Public Access block",
+      "resource": "aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        111,
+        113
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        111,
+        113
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        111,
+        113
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "aws_kms_key.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        106,
+        109
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        111,
+        113
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_18",
+      "check_name": "Ensure the S3 bucket has access logging enabled",
+      "resource": "aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        111,
+        113
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        111,
+        113
+      ]
+    }
+  ],
+  "removed_findings": [
+    {
+      "check_id": "CKV2_AWS_6",
+      "check_name": "Ensure that S3 bucket has a Public Access block",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "module.storage.aws_kms_key.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        1,
+        4
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_18",
+      "check_name": "Ensure the S3 bucket has access logging enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "/modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_288",
+      "check_name": "Ensure IAM policies does not allow data exfiltration",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_290",
+      "check_name": "Ensure IAM policies does not allow write access without constraints",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_355",
+      "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    }
+  ],
+  "original_failed_finding_count": 10,
+  "remediated_failed_finding_count": 7,
+  "final_result": "FAIL"
+}

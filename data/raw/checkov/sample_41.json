@@ -1,0 +1,384 @@
+{
+  "check_type": "terraform",
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_AWS_119",
+        "bc_check_id": "BC_AWS_GENERAL_52",
+        "check_name": "Ensure DynamoDB Tables are encrypted using a KMS Customer Managed CMK",
+        "check_result": {
+          "result": "FAILED",
+          "evaluated_keys": [
+            "server_side_encryption/[0]/enabled",
+            "server_side_encryption/[0]/kms_key_arn"
+          ]
+        },
+        "code_block": [
+          [
+            14,
+            "resource \"aws_dynamodb_table\" \"sample_27\" {\n"
+          ],
+          [
+            15,
+            "  name         = local.table_config.name\n"
+          ],
+          [
+            16,
+            "  billing_mode = local.table_config.billing\n"
+          ],
+          [
+            17,
+            "  hash_key     = local.table_config.hash_key\n"
+          ],
+          [
+            18,
+            "\n"
+          ],
+          [
+            19,
+            "  attribute {\n"
+          ],
+          [
+            20,
+            "    name = \"id\"\n"
+          ],
+          [
+            21,
+            "    type = \"S\"\n"
+          ],
+          [
+            22,
+            "  }\n"
+          ],
+          [
+            23,
+            "\n"
+          ],
+          [
+            24,
+            "  point_in_time_recovery {\n"
+          ],
+          [
+            25,
+            "    enabled = true\n"
+          ],
+          [
+            26,
+            "  }\n"
+          ],
+          [
+            27,
+            "\n"
+          ],
+          [
+            28,
+            "  server_side_encryption {\n"
+          ],
+          [
+            29,
+            "    enabled = true\n"
+          ],
+          [
+            30,
+            "\n"
+          ],
+          [
+            31,
+            "    # Intentionally missing customer-managed KMS key.\n"
+          ],
+          [
+            32,
+            "    # Expected Checkov finding: CKV_AWS_119\n"
+          ],
+          [
+            33,
+            "  }\n"
+          ],
+          [
+            34,
+            "\n"
+          ],
+          [
+            35,
+            "  tags = {\n"
+          ],
+          [
+            36,
+            "    Environment = var.environment\n"
+          ],
+          [
+            37,
+            "    Application = \"order-service\"\n"
+          ],
+          [
+            38,
+            "  }\n"
+          ],
+          [
+            39,
+            "}\n"
+          ]
+        ],
+        "file_path": "/main.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/main.tf",
+        "repo_file_path": "/pilot_samples/sample_41/main.tf",
+        "file_line_range": [
+          14,
+          39
+        ],
+        "resource": "aws_dynamodb_table.sample_27",
+        "evaluations": null,
+        "check_class": "checkov.terraform.checks.resource.aws.DynamoDBTablesEncrypted",
+        "fixed_definition": null,
+        "entity_tags": {
+          "Application": "order-service",
+          "Environment": "prod"
+        },
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-52",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/main.tf",
+        "breadcrumbs": {
+          "tags.Environment": [
+            {
+              "type": "variable",
+              "name": "environment",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/variables.tf",
+              "module_connection": false
+            }
+          ],
+          "hash_key": [
+            {
+              "type": "locals",
+              "name": "table_config",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/locals.tf",
+              "module_connection": false
+            }
+          ],
+          "billing_mode": [
+            {
+              "type": "locals",
+              "name": "table_config",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/locals.tf",
+              "module_connection": false
+            }
+          ],
+          "name": [
+            {
+              "type": "locals",
+              "name": "table_config",
+              "path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/locals.tf",
+              "module_connection": false
+            }
+          ]
+        }
+      },
+      {
+        "check_id": "CKV2_AWS_64",
+        "bc_check_id": "BC_AWS_IAM_76",
+        "check_name": "Ensure KMS key Policy is defined",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_kms_key": {
+              "application": {
+                "__end_line__": 8,
+                "__start_line__": 1,
+                "description": [
+                  "KMS key for application data"
+                ],
+                "enable_key_rotation": [
+                  true
+                ],
+                "tags": [
+                  {
+                    "Purpose": "application-data"
+                  }
+                ],
+                "__address__": "aws_kms_key.application"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "policy"
+          ]
+        },
+        "code_block": [
+          [
+            1,
+            "resource \"aws_kms_key\" \"application\" {\n"
+          ],
+          [
+            2,
+            "  description         = \"KMS key for application data\"\n"
+          ],
+          [
+            3,
+            "  enable_key_rotation = true\n"
+          ],
+          [
+            4,
+            "\n"
+          ],
+          [
+            5,
+            "  tags = {\n"
+          ],
+          [
+            6,
+            "    Purpose = \"application-data\"\n"
+          ],
+          [
+            7,
+            "  }\n"
+          ],
+          [
+            8,
+            "}\n"
+          ]
+        ],
+        "file_path": "/kms.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/kms.tf",
+        "repo_file_path": "/pilot_samples/sample_41/kms.tf",
+        "file_line_range": [
+          1,
+          8
+        ],
+        "resource": "aws_kms_key.application",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": {
+          "Purpose": "application-data"
+        },
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-64",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/kms.tf"
+      },
+      {
+        "check_id": "CKV2_AWS_64",
+        "bc_check_id": "BC_AWS_IAM_76",
+        "check_name": "Ensure KMS key Policy is defined",
+        "check_result": {
+          "result": "FAILED",
+          "entity": {
+            "aws_kms_key": {
+              "logging": {
+                "__end_line__": 17,
+                "__start_line__": 10,
+                "description": [
+                  "KMS key used only for logging"
+                ],
+                "enable_key_rotation": [
+                  true
+                ],
+                "tags": [
+                  {
+                    "Purpose": "logging"
+                  }
+                ],
+                "__address__": "aws_kms_key.logging"
+              }
+            }
+          },
+          "evaluated_keys": [
+            "resource_type",
+            "policy"
+          ]
+        },
+        "code_block": [
+          [
+            10,
+            "resource \"aws_kms_key\" \"logging\" {\n"
+          ],
+          [
+            11,
+            "  description         = \"KMS key used only for logging\"\n"
+          ],
+          [
+            12,
+            "  enable_key_rotation = true\n"
+          ],
+          [
+            13,
+            "\n"
+          ],
+          [
+            14,
+            "  tags = {\n"
+          ],
+          [
+            15,
+            "    Purpose = \"logging\"\n"
+          ],
+          [
+            16,
+            "  }\n"
+          ],
+          [
+            17,
+            "}\n"
+          ]
+        ],
+        "file_path": "/kms.tf",
+        "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/kms.tf",
+        "repo_file_path": "/pilot_samples/sample_41/kms.tf",
+        "file_line_range": [
+          10,
+          17
+        ],
+        "resource": "aws_kms_key.logging",
+        "evaluations": null,
+        "check_class": "checkov.common.graph.checks_infra.base_check",
+        "fixed_definition": null,
+        "entity_tags": {
+          "Purpose": "logging"
+        },
+        "caller_file_path": null,
+        "caller_file_line_range": null,
+        "resource_address": null,
+        "severity": null,
+        "bc_category": null,
+        "benchmarks": null,
+        "description": null,
+        "short_description": null,
+        "vulnerability_details": null,
+        "connected_node": null,
+        "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-64",
+        "details": [],
+        "check_len": null,
+        "definition_context_file_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_41/kms.tf"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 12,
+    "failed": 3,
+    "skipped": 0,
+    "parsing_errors": 0,
+    "resource_count": 6,
+    "checkov_version": "3.3.17"
+  }
+}

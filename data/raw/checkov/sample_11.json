@@ -32,18 +32,30 @@
           ],
           [
             19,
-            "  attribute { name = \"id\"  type = \"S\" }\n"
+            "  attribute { \n"
           ],
           [
             20,
-            "  server_side_encryption { enabled = true }\n"
+            "    name = \"id\"  \n"
           ],
           [
             21,
-            "  point_in_time_recovery { enabled = true }\n"
+            "    type = \"S\" \n"
           ],
           [
             22,
+            "    }\n"
+          ],
+          [
+            23,
+            "  server_side_encryption { enabled = true }\n"
+          ],
+          [
+            24,
+            "  point_in_time_recovery { enabled = true }\n"
+          ],
+          [
+            25,
             "}\n"
           ]
         ],
@@ -52,7 +64,7 @@
         "repo_file_path": "/pilot_samples/sample_11/main.tf",
         "file_line_range": [
           15,
-          22
+          25
         ],
         "resource": "aws_dynamodb_table.sample_11",
         "evaluations": null,

@@ -17,75 +17,75 @@
         },
         "code_block": [
           [
-            16,
+            19,
             "resource \"aws_security_group\" \"sample_01\" {\n"
           ],
           [
-            17,
+            20,
             "  name = \"terratier-sample-01\"\n"
           ],
           [
-            18,
+            21,
             "  description = \"Security group for TerraTier sample 01\"\n"
           ],
           [
-            19,
+            22,
             "  ingress {\n"
           ],
           [
-            20,
+            23,
             "    description = \"SSH administration\"\n"
           ],
           [
-            21,
+            24,
             "    from_port = 22\n"
           ],
           [
-            22,
+            25,
             "    to_port = 22\n"
           ],
           [
-            23,
-            "    protocol = \"tcp\"\n"
-          ],
-          [
-            24,
-            "    cidr_blocks = [\"0.0.0.0/0\"]\n"
-          ],
-          [
-            25,
-            "  }\n"
-          ],
-          [
             26,
-            "  egress {\n"
+            "    protocol = \"tcp\"\n"
           ],
           [
             27,
-            "    description = \"HTTPS outbound\"\n"
+            "    cidr_blocks = [\"0.0.0.0/0\"]\n"
           ],
           [
             28,
-            "    from_port = 443\n"
-          ],
-          [
-            29,
-            "    to_port = 443\n"
-          ],
-          [
-            30,
-            "    protocol = \"tcp\"\n"
-          ],
-          [
-            31,
-            "    cidr_blocks = [\"10.0.0.0/8\"]\n"
-          ],
-          [
-            32,
             "  }\n"
           ],
           [
+            29,
+            "  egress {\n"
+          ],
+          [
+            30,
+            "    description = \"HTTPS outbound\"\n"
+          ],
+          [
+            31,
+            "    from_port = 443\n"
+          ],
+          [
+            32,
+            "    to_port = 443\n"
+          ],
+          [
             33,
+            "    protocol = \"tcp\"\n"
+          ],
+          [
+            34,
+            "    cidr_blocks = [\"10.0.0.0/8\"]\n"
+          ],
+          [
+            35,
+            "  }\n"
+          ],
+          [
+            36,
             "}\n"
           ]
         ],
@@ -93,8 +93,8 @@
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_01/main.tf",
         "repo_file_path": "/pilot_samples/sample_01/main.tf",
         "file_line_range": [
-          16,
-          33
+          19,
+          36
         ],
         "resource": "aws_security_group.sample_01",
         "evaluations": null,

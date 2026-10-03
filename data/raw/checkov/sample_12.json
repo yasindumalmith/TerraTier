@@ -16,27 +16,67 @@
         },
         "code_block": [
           [
-            16,
+            19,
             "resource \"aws_security_group\" \"sample_12\" {\n"
           ],
           [
-            17,
+            20,
             "  name = \"terratier-sample-12\"\n"
           ],
           [
-            18,
+            21,
             "  description = \"Security group for TerraTier sample 12\"\n"
           ],
           [
-            19,
-            "  ingress { from_port = 443  to_port = 443  protocol = \"tcp\"  cidr_blocks = [\"10.0.0.0/8\"] }\n"
+            22,
+            "  ingress { \n"
           ],
           [
-            20,
-            "  egress { from_port = 443  to_port = 443  protocol = \"tcp\"  cidr_blocks = [\"10.0.0.0/8\"] }\n"
+            23,
+            "    from_port = 443  \n"
           ],
           [
-            21,
+            24,
+            "    to_port = 443  \n"
+          ],
+          [
+            25,
+            "    protocol = \"tcp\"  \n"
+          ],
+          [
+            26,
+            "    cidr_blocks = [\"10.0.0.0/8\"] \n"
+          ],
+          [
+            27,
+            "    }\n"
+          ],
+          [
+            28,
+            "  egress { \n"
+          ],
+          [
+            29,
+            "    from_port = 443  \n"
+          ],
+          [
+            30,
+            "    to_port = 443  \n"
+          ],
+          [
+            31,
+            "    protocol = \"tcp\"  \n"
+          ],
+          [
+            32,
+            "    cidr_blocks = [\"10.0.0.0/8\"] \n"
+          ],
+          [
+            33,
+            "    }\n"
+          ],
+          [
+            34,
             "}\n"
           ]
         ],
@@ -44,8 +84,8 @@
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_12/main.tf",
         "repo_file_path": "/pilot_samples/sample_12/main.tf",
         "file_line_range": [
-          16,
-          21
+          19,
+          34
         ],
         "resource": "aws_security_group.sample_12",
         "evaluations": null,

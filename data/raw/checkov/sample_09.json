@@ -14,51 +14,75 @@
         },
         "code_block": [
           [
-            28,
+            37,
             "resource \"aws_instance\" \"sample_09\" {\n"
           ],
           [
-            29,
+            38,
             "  ami = var.ami_id\n"
           ],
           [
-            30,
+            39,
             "  instance_type = \"t3.micro\"\n"
           ],
           [
-            31,
+            40,
             "  subnet_id = var.subnet_id\n"
           ],
           [
-            32,
+            41,
             "  associate_public_ip_address = false\n"
           ],
           [
-            33,
+            42,
             "  iam_instance_profile = aws_iam_instance_profile.sample_09.name\n"
           ],
           [
-            34,
+            43,
             "  monitoring = false\n"
           ],
           [
-            35,
+            44,
             "  ebs_optimized = true\n"
           ],
           [
-            36,
-            "  metadata_options { http_endpoint = \"enabled\"  http_tokens = \"required\" }\n"
+            45,
+            "  metadata_options { \n"
           ],
           [
-            37,
-            "  root_block_device { encrypted = true  volume_type = \"gp3\" }\n"
+            46,
+            "    http_endpoint = \"enabled\"  \n"
           ],
           [
-            38,
+            47,
+            "    http_tokens = \"required\" \n"
+          ],
+          [
+            48,
+            "    }\n"
+          ],
+          [
+            49,
+            "  root_block_device { \n"
+          ],
+          [
+            50,
+            "    encrypted = true  \n"
+          ],
+          [
+            51,
+            "    volume_type = \"gp3\" \n"
+          ],
+          [
+            52,
+            "    }\n"
+          ],
+          [
+            53,
             "  tags = { Name = \"terratier-sample-09\" }\n"
           ],
           [
-            39,
+            54,
             "}\n"
           ]
         ],
@@ -66,8 +90,8 @@
         "file_abs_path": "/media/yasindumalmith/DISK_D/University Academic/4th Year/Research project/Implementation/TerraTier/pilot_samples/sample_09/main.tf",
         "repo_file_path": "/pilot_samples/sample_09/main.tf",
         "file_line_range": [
-          28,
-          39
+          37,
+          54
         ],
         "resource": "aws_instance.sample_09",
         "evaluations": null,

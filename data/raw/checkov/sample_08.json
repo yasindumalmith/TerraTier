@@ -31,10 +31,22 @@
           ],
           [
             33,
-            "  encryption_configuration { encryption_type = \"KMS\"  kms_key = aws_kms_key.sample_08.arn }\n"
+            "  encryption_configuration { \n"
           ],
           [
             34,
+            "    encryption_type = \"KMS\"  \n"
+          ],
+          [
+            35,
+            "    kms_key = aws_kms_key.sample_08.arn \n"
+          ],
+          [
+            36,
+            "    }\n"
+          ],
+          [
+            37,
             "}\n"
           ]
         ],
@@ -43,7 +55,7 @@
         "repo_file_path": "/pilot_samples/sample_08/main.tf",
         "file_line_range": [
           29,
-          34
+          37
         ],
         "resource": "aws_ecr_repository.sample_08",
         "evaluations": null,

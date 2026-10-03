@@ -1,0 +1,32 @@
+{
+  "finding_id": "F013",
+  "target_check_id": "CKV_AWS_24",
+  "target_resource": "aws_security_group.sample_13",
+  "fmt_pass": true,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "target_present_in_original": true,
+  "target_finding_removed": true,
+  "resource_preserved": true,
+  "suppression_added": false,
+  "added_suppressions": [],
+  "new_findings": [],
+  "removed_findings": [
+    {
+      "check_id": "CKV_AWS_24",
+      "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+      "resource": "aws_security_group.sample_13",
+      "severity": null,
+      "file_path": "/main.tf",
+      "file_line_range": [
+        16,
+        41
+      ]
+    }
+  ],
+  "original_failed_finding_count": 1,
+  "remediated_failed_finding_count": 0,
+  "final_result": "PASS"
+}
