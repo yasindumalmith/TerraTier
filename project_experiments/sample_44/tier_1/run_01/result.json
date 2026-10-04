@@ -1,0 +1,148 @@
+{
+  "sample_id": "sample_44",
+  "tier": "tier_1",
+  "model_id": "claude-haiku-4-5-20251001",
+  "run_id": "run_01",
+  "prompt_sha256": "60f48769b416884f9e812dbe3c8778b6cd582157a11724b3c62f31afa3932fbb",
+  "experiment_unit": "terraform_project",
+  "fmt_pass": true,
+  "terraform_init_pass": true,
+  "terraform_valid": true,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "original_findings": [
+    {
+      "check_id": "CKV_AWS_163",
+      "check_name": "Ensure ECR image scanning on push is enabled",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_51",
+      "check_name": "Ensure ECR Image Tags are immutable",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_136",
+      "check_name": "Ensure that ECR repositories are encrypted using KMS",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    }
+  ],
+  "remediated_findings": [],
+  "original_failed_finding_count": 3,
+  "remediated_failed_finding_count": 0,
+  "removed_original_findings": [
+    {
+      "check_id": "CKV_AWS_136",
+      "check_name": "Ensure that ECR repositories are encrypted using KMS",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_163",
+      "check_name": "Ensure ECR image scanning on push is enabled",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_51",
+      "check_name": "Ensure ECR Image Tags are immutable",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    }
+  ],
+  "remaining_original_findings": [],
+  "new_findings": [],
+  "removed_original_finding_count": 3,
+  "remaining_original_finding_count": 0,
+  "new_finding_count": 0,
+  "remediation_coverage": 1.0,
+  "resources_preserved": true,
+  "missing_resources": [],
+  "original_resource_count": 3,
+  "remediated_resource_count": 4,
+  "project_structure_preserved": true,
+  "missing_terraform_files": [],
+  "added_terraform_files": [],
+  "suppression_added": false,
+  "added_suppressions": [],
+  "semantic_validation_status": "generic_invariants_only",
+  "semantic_validation_configured": false,
+  "semantic_validation_pass": true,
+  "scanner_clean": true,
+  "execution_error": false,
+  "execution_error_type": null,
+  "run_status": "COMPLETED",
+  "validation_skipped": false,
+  "terraform_command_results": {
+    "fmt": {
+      "pass": true,
+      "stdout": "",
+      "stderr": ""
+    },
+    "init": {
+      "pass": true,
+      "stdout": "Initializing provider plugins...\n- Finding hashicorp/aws versions matching \"6.67.0\"...\n- Finding hashicorp/null versions matching \"3.3.2\"...\n- Installing hashicorp/null v3.3.2...\n- Installed hashicorp/null v3.3.2 (signed by HashiCorp)\n- Installing hashicorp/aws v6.67.0...\n- Installed hashicorp/aws v6.67.0 (signed by HashiCorp)\n\nTerraform has created a lock file .terraform.lock.hcl to record the provider\nselections it made above. Include this file in your version control repository\nso that Terraform can guarantee to make the same selections by default when\nyou run \"terraform init\" in the future.\n\nTerraform has been successfully initialized!\n\nYou may now begin working with Terraform. Try running \"terraform plan\" to see\nany changes that are required for your infrastructure. All Terraform commands\nshould now work.\n\nIf you ever set or change modules or backend configuration for Terraform,\nrerun this command to reinitialize your working directory. If you forget, other\ncommands will detect it and remind you to do so if necessary.",
+      "stderr": ""
+    },
+    "validate": {
+      "pass": true,
+      "valid": true,
+      "diagnostics": [],
+      "stdout": "{\n  \"format_version\": \"1.0\",\n  \"valid\": true,\n  \"error_count\": 0,\n  \"warning_count\": 0,\n  \"diagnostics\": []\n}",
+      "stderr": ""
+    }
+  },
+  "terraform_diagnostics": [],
+  "scan_errors": {
+    "original": null,
+    "remediated": null
+  },
+  "final_result": "PASS",
+  "failure_reasons": [],
+  "generation": {
+    "model_id": "claude-haiku-4-5-20251001",
+    "response_model_id": "claude-haiku-4-5-20251001",
+    "max_output_tokens": 8192,
+    "input_tokens": 1052,
+    "output_tokens": 730,
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "output_truncated": false,
+    "generation_complete": true,
+    "latency_seconds": 5.845453,
+    "generated_at": "2026-10-04T07:04:10.559302+00:00"
+  }
+}

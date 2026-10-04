@@ -1,0 +1,78 @@
+{
+  "experiment_unit": "terraform_project",
+  "sample_id": "sample_44",
+  "tier": "tier_3",
+  "model_tier": "tier_3",
+  "model_id": "claude-opus-4-8",
+  "run_id": "run_01",
+  "max_tokens": 8192,
+  "prompt_sha256": "60f48769b416884f9e812dbe3c8778b6cd582157a11724b3c62f31afa3932fbb",
+  "timestamp": "2026-10-04T07:07:22.425563+00:00",
+  "api_request_success": true,
+  "api_input_tokens": 1368,
+  "api_output_tokens": 916,
+  "api_total_tokens": 2284,
+  "request_latency_seconds": 8.668514,
+  "original_checkov_scan_success": true,
+  "original_findings": [
+    {
+      "check_id": "CKV_AWS_163",
+      "check_name": "Ensure ECR image scanning on push is enabled",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_51",
+      "check_name": "Ensure ECR Image Tags are immutable",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_136",
+      "check_name": "Ensure that ECR repositories are encrypted using KMS",
+      "resource": "aws_ecr_repository.repository",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        34,
+        53
+      ]
+    }
+  ],
+  "generation": {
+    "model_id": "claude-opus-4-8",
+    "response_model_id": "claude-opus-4-8",
+    "max_output_tokens": 8192,
+    "input_tokens": 1368,
+    "output_tokens": 916,
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "output_truncated": false,
+    "generation_complete": true,
+    "latency_seconds": 8.668514,
+    "generated_at": "2026-10-04T07:07:31.094422+00:00"
+  },
+  "response_model_id": "claude-opus-4-8",
+  "response_stop_reason": "end_turn",
+  "response_stop_sequence": null,
+  "output_truncated": false,
+  "generation_complete": true,
+  "response_id": "msg_011CfgmuBnjqhgELbZtVdW82",
+  "response_parse_success": true,
+  "returned_files": [
+    "main.tf"
+  ],
+  "validation_exit_code": 0,
+  "validation_completed": true,
+  "completed_at": "2026-10-04T07:08:29.124691+00:00"
+}
