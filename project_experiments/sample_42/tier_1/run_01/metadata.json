@@ -1,0 +1,144 @@
+{
+  "experiment_unit": "terraform_project",
+  "sample_id": "sample_42",
+  "tier": "tier_1",
+  "model_tier": "tier_1",
+  "model_id": "claude-haiku-4-5-20251001",
+  "run_id": "run_01",
+  "max_tokens": 4096,
+  "prompt_sha256": "a199bd9ffd034a327bc3aca14051c6218e958287528f67fc16e2b9b6cd546fd9",
+  "timestamp": "2026-10-03T17:25:22.122147+00:00",
+  "api_request_success": true,
+  "api_input_tokens": 1891,
+  "api_output_tokens": 1695,
+  "api_total_tokens": 3586,
+  "request_latency_seconds": 12.175803,
+  "original_checkov_scan_success": true,
+  "original_findings": [
+    {
+      "check_id": "CKV_AWS_288",
+      "check_name": "Ensure IAM policies does not allow data exfiltration",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_355",
+      "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_290",
+      "check_name": "Ensure IAM policies does not allow write access without constraints",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_6",
+      "check_name": "Ensure that S3 bucket has a Public Access block",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "module.storage.aws_kms_key.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        1,
+        4
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_18",
+      "check_name": "Ensure the S3 bucket has access logging enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    }
+  ],
+  "response_id": "msg_011CffhDhGvm1aDLDT8RcRSx",
+  "response_model_id": "claude-haiku-4-5-20251001",
+  "response_stop_reason": "end_turn",
+  "response_parse_success": true,
+  "returned_files": [
+    "locals.tf",
+    "main.tf",
+    "modules/storage/main.tf",
+    "modules/storage/outputs.tf",
+    "modules/storage/variables.tf",
+    "variables.tf"
+  ],
+  "validation_exit_code": 0,
+  "validation_completed": true,
+  "completed_at": "2026-10-03T17:26:20.190518+00:00"
+}

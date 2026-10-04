@@ -84,10 +84,39 @@ def classify_run(
     result_file = run_dir / "result.json"
     metadata, metadata_error = read_json(metadata_file)
     result, result_error = read_json(result_file)
+    generation = result.get("generation", {}) if isinstance(result, dict) else {}
+    stop_reason = (
+        generation.get("stop_reason")
+        if isinstance(generation, dict) and generation.get("stop_reason") is not None
+        else metadata.get("response_stop_reason")
+        if isinstance(metadata, dict)
+        else None
+    )
+    output_truncated = bool(
+        (generation.get("output_truncated") if isinstance(generation, dict) else False)
+        or stop_reason == "max_tokens"
+    )
+    execution_error = bool(
+        (result.get("execution_error") if isinstance(result, dict) else False)
+        or output_truncated
+    )
 
     detail = {
         "run_id": run_id,
         "status": "EXECUTION_ERROR",
+        "run_status": (
+            "GENERATION_TRUNCATED"
+            if output_truncated
+            else result.get("run_status")
+            if isinstance(result, dict)
+            else None
+        ),
+        "execution_error": execution_error,
+        "execution_error_type": (
+            result.get("execution_error_type") if isinstance(result, dict) else None
+        ) or ("LLM_OUTPUT_TRUNCATED" if output_truncated else None),
+        "stop_reason": stop_reason,
+        "output_truncated": output_truncated,
         "execution_attempted": execution_attempted,
         "runner_exit_code": runner_exit_code,
         "api_request_success": (
@@ -142,10 +171,24 @@ def classify_run(
         return detail
 
     if not metadata.get("api_request_success"):
+        detail["run_status"] = "API_ERROR"
+        detail["execution_error"] = True
+        detail["execution_error_type"] = "API_ERROR"
         detail["error_type"] = "api_error"
         detail["error_message"] = metadata.get(
             "api_error_message",
             "The API request did not complete successfully.",
+        )
+        return detail
+
+    if detail["execution_error"]:
+        detail["error_type"] = detail["execution_error_type"] or "runtime_error"
+        detail["error_message"] = (
+            result.get("failure_details", {}).get(
+                detail["execution_error_type"], "Experiment execution failed."
+            )
+            if isinstance(result, dict)
+            else "Experiment execution failed."
         )
         return detail
 
@@ -190,7 +233,12 @@ def build_summary(args, run_results):
     pass_count = sum(result["status"] == "PASS" for result in run_results)
     fail_count = sum(result["status"] == "FAIL" for result in run_results)
     execution_error_count = sum(
-        result["status"] == "EXECUTION_ERROR" for result in run_results
+        result.get("execution_error") or result["status"] == "EXECUTION_ERROR"
+        for result in run_results
+    )
+    generation_truncated_count = sum(
+        result.get("run_status") == "GENERATION_TRUNCATED"
+        for result in run_results
     )
 
     input_tokens = numeric_values(run_results, "api_input_tokens")
@@ -216,6 +264,7 @@ def build_summary(args, run_results):
         "pass_count": pass_count,
         "fail_count": fail_count,
         "execution_error_count": execution_error_count,
+        "generation_truncated_count": generation_truncated_count,
         "success_rate": round(pass_count / args.runs, 6),
         "total_input_tokens": sum(input_tokens),
         "total_output_tokens": sum(output_tokens),

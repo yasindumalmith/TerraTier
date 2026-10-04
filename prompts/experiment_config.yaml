@@ -1,0 +1,26 @@
+protocol_version: "1.0"
+
+models:
+  tier_1: "claude-haiku-4-5-20251001"
+  tier_2: "claude-sonnet-4-6"
+  tier_3: "claude-opus-4-8"
+
+generation:
+  max_output_tokens: 8192
+
+screening:
+  repetitions: 1
+
+validation:
+  require_generation_complete: true
+  require_terraform_init: true
+  require_terraform_validate: true
+  require_all_original_findings_removed: true
+  require_no_new_findings: true
+  require_resource_preservation: true
+  require_project_structure_preservation: true
+  require_no_suppression: true
+  require_semantic_validation: true
+
+  # Recorded, but does not determine PASS/FAIL
+  require_fmt_for_pass: false

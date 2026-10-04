@@ -228,6 +228,131 @@ def extract_text_response(message):
     return "".join(text_blocks)
 
 
+def build_generation_record(
+    message,
+    model_id: str,
+    max_tokens: int,
+    latency_seconds=None,
+    generated_at=None,
+):
+    """Build the canonical generation record from Anthropic response metadata."""
+    usage = getattr(message, "usage", None) if message is not None else None
+    input_tokens = getattr(usage, "input_tokens", None)
+    output_tokens = getattr(usage, "output_tokens", None)
+    stop_reason = getattr(message, "stop_reason", None) if message is not None else None
+    output_truncated = stop_reason == "max_tokens"
+    return {
+        "model_id": model_id,
+        "response_model_id": (
+            getattr(message, "model", None) if message is not None else None
+        ),
+        "max_output_tokens": max_tokens,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "stop_reason": stop_reason,
+        "stop_sequence": (
+            getattr(message, "stop_sequence", None) if message is not None else None
+        ),
+        "output_truncated": output_truncated,
+        "generation_complete": message is not None and not output_truncated,
+        "latency_seconds": (
+            round(latency_seconds, 6)
+            if isinstance(latency_seconds, (int, float))
+            else None
+        ),
+        "generated_at": generated_at,
+    }
+
+
+def update_metadata_with_generation(metadata, generation):
+    """Store canonical fields while retaining the pre-existing flat schema."""
+    input_tokens = generation["input_tokens"]
+    output_tokens = generation["output_tokens"]
+    metadata.update(
+        {
+            "generation": generation,
+            "api_input_tokens": input_tokens,
+            "api_output_tokens": output_tokens,
+            "api_total_tokens": (
+                input_tokens + output_tokens
+                if isinstance(input_tokens, int) and isinstance(output_tokens, int)
+                else None
+            ),
+            "request_latency_seconds": generation["latency_seconds"],
+            "response_model_id": generation["response_model_id"],
+            "response_stop_reason": generation["stop_reason"],
+            "response_stop_sequence": generation["stop_sequence"],
+            "output_truncated": generation["output_truncated"],
+            "generation_complete": generation["generation_complete"],
+        }
+    )
+
+
+def skipped_validation_fields(reason: str):
+    """Describe validation stages deliberately skipped before Terraform extraction."""
+    return {
+        "validation_skipped": True,
+        "validation_skip_reason": reason,
+        "validation_stages": {
+            stage: {"status": "SKIPPED", "reason": reason}
+            for stage in (
+                "terraform_fmt",
+                "terraform_init",
+                "terraform_validate",
+                "checkov",
+                "resource_preservation",
+                "suppression_detection",
+                "semantic_validation",
+            )
+        },
+    }
+
+
+def generation_failure_result(reason: str, error_type: str, generation):
+    """Create a compact result when generation cannot reach validation."""
+    return {
+        "generation": generation,
+        "scanner_clean": False,
+        "terraform_valid": False,
+        "resources_preserved": False,
+        "suppression_added": False,
+        "execution_error": True,
+        "execution_error_type": error_type,
+        "run_status": (
+            "GENERATION_TRUNCATED"
+            if error_type == "LLM_OUTPUT_TRUNCATED"
+            else "API_ERROR"
+            if error_type == "API_ERROR"
+            else "GENERATION_FAILED"
+        ),
+        "final_result": "FAIL",
+        "failure_reasons": [error_type],
+        "failure_details": {error_type: reason},
+        **skipped_validation_fields(reason),
+    }
+
+
+def enrich_result_with_generation(result, generation):
+    """Attach generation evidence without weakening the validator's PASS rule."""
+    final_result = result.get("final_result")
+    result.update(
+        {
+            "generation": generation,
+            "scanner_clean": bool(
+                result.get("remediated_checkov_scan_success")
+                and result.get("remediated_failed_finding_count") == 0
+            ),
+            "execution_error": False,
+            "execution_error_type": None,
+            "run_status": (
+                "COMPLETED" if final_result == "PASS" else "VALIDATION_FAILED"
+            ),
+            "validation_skipped": False,
+        }
+    )
+    return result
+
+
 def write_metadata(metadata_file: Path, metadata):
     with metadata_file.open("w", encoding="utf-8") as file:
         json.dump(metadata, file, indent=2)
@@ -253,6 +378,9 @@ def make_base_metadata(args, finding, prompt: str):
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "api_request_success": False,
         "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+        "generation": build_generation_record(
+            None, args.model, args.max_tokens
+        ),
     }
 
 
@@ -379,36 +507,36 @@ def run(args):
         prompt,
     )
 
-    metadata["request_latency_seconds"] = round(latency, 6)
+    generated_at = datetime.now(timezone.utc).isoformat()
 
     if api_error is not None:
+        generation = build_generation_record(
+            None, args.model, args.max_tokens, latency, generated_at
+        )
+        update_metadata_with_generation(metadata, generation)
         metadata["api_error_type"] = type(api_error).__name__
         metadata["api_error_message"] = str(api_error)
         write_metadata(metadata_file, metadata)
+        result = {
+            "finding_id": args.finding_id,
+            "sample_id": args.sample_id,
+            "check_id": args.check_id,
+            "resource": args.resource,
+            **generation_failure_result(str(api_error), "API_ERROR", generation),
+        }
+        write_metadata(result_file, result)
         raise RemediationError(
             f"Anthropic API request failed: {api_error}. "
             f"Failure metadata was saved to {metadata_file}."
         )
 
-    usage = message.usage
-    input_tokens = getattr(usage, "input_tokens", None)
-    output_tokens = getattr(usage, "output_tokens", None)
-    total_tokens = (
-        input_tokens + output_tokens
-        if isinstance(input_tokens, int) and isinstance(output_tokens, int)
-        else None
+    generation = build_generation_record(
+        message, args.model, args.max_tokens, latency, generated_at
     )
-
+    update_metadata_with_generation(metadata, generation)
     metadata.update(
-        {
-            "api_input_tokens": input_tokens,
-            "api_output_tokens": output_tokens,
-            "api_total_tokens": total_tokens,
-            "api_request_success": True,
-            "response_id": getattr(message, "id", None),
-            "response_model_id": getattr(message, "model", None),
-            "response_stop_reason": getattr(message, "stop_reason", None),
-        }
+        api_request_success=True,
+        response_id=getattr(message, "id", None),
     )
 
     try:
@@ -416,9 +544,56 @@ def run(args):
     except RemediationError as exc:
         metadata["response_error"] = str(exc)
         write_metadata(metadata_file, metadata)
+        if generation["output_truncated"]:
+            reason = (
+                "Anthropic stopped generation because the output token limit was "
+                "reached; the response contained no text blocks."
+            )
+            raw_response_file.write_text("", encoding="utf-8")
+            result = {
+                "finding_id": args.finding_id,
+                "sample_id": args.sample_id,
+                "check_id": args.check_id,
+                "resource": args.resource,
+                **generation_failure_result(
+                    reason, "LLM_OUTPUT_TRUNCATED", generation
+                ),
+            }
+            write_metadata(result_file, result)
+            raise RemediationError(reason) from exc
+        result = {
+            "finding_id": args.finding_id,
+            "sample_id": args.sample_id,
+            "check_id": args.check_id,
+            "resource": args.resource,
+            **generation_failure_result(
+                str(exc), "LLM_OUTPUT_PARSE_FAILURE", generation
+            ),
+        }
+        write_metadata(result_file, result)
         raise
 
     raw_response_file.write_text(raw_response, encoding="utf-8")
+    if generation["output_truncated"]:
+        reason = "Anthropic stopped generation because the output token limit was reached."
+        metadata["response_parse_success"] = None
+        metadata["response_parse_skipped_reason"] = reason
+        write_metadata(metadata_file, metadata)
+        result = {
+            "finding_id": args.finding_id,
+            "sample_id": args.sample_id,
+            "check_id": args.check_id,
+            "resource": args.resource,
+            **generation_failure_result(
+                reason, "LLM_OUTPUT_TRUNCATED", generation
+            ),
+        }
+        write_metadata(result_file, result)
+        raise RemediationError(
+            f"Claude output was truncated at {args.max_tokens} output tokens. "
+            f"Raw output and metadata were saved to {output_dir}."
+        )
+
     generated_code = strip_outer_terraform_fence(raw_response)
     generated_file.write_text(generated_code, encoding="utf-8")
     write_metadata(metadata_file, metadata)
@@ -434,6 +609,26 @@ def run(args):
     write_metadata(metadata_file, metadata)
 
     if validation_exit_code != 0:
+        reason = f"The validator exited with status {validation_exit_code}."
+        result = {
+            "finding_id": args.finding_id,
+            "sample_id": args.sample_id,
+            "check_id": args.check_id,
+            "resource": args.resource,
+            "generation": generation,
+            "scanner_clean": False,
+            "terraform_valid": False,
+            "resources_preserved": False,
+            "suppression_added": False,
+            "execution_error": True,
+            "execution_error_type": "VALIDATOR_EXECUTION_ERROR",
+            "run_status": "VALIDATION_FAILED",
+            "validation_skipped": False,
+            "final_result": "FAIL",
+            "failure_reasons": ["VALIDATOR_EXECUTION_ERROR"],
+            "failure_details": {"VALIDATOR_EXECUTION_ERROR": reason},
+        }
+        write_metadata(result_file, result)
         raise RemediationError(
             f"The validator exited with status {validation_exit_code}. "
             f"Generated artifacts remain in {output_dir}."
@@ -443,6 +638,11 @@ def run(args):
         raise RemediationError(
             f"The validator completed without creating the expected result: {result_file}"
         )
+
+    with result_file.open(encoding="utf-8") as file:
+        result = json.load(file)
+    result = enrich_result_with_generation(result, generation)
+    write_metadata(result_file, result)
 
     print(f"Experiment artifacts saved to {output_dir}")
 

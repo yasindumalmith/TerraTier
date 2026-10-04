@@ -1,0 +1,542 @@
+{
+  "sample_id": "sample_42",
+  "tier": "tier_1",
+  "model_id": "claude-haiku-4-5-20251001",
+  "run_id": "run_01",
+  "prompt_sha256": "a199bd9ffd034a327bc3aca14051c6218e958287528f67fc16e2b9b6cd546fd9",
+  "experiment_unit": "terraform_project",
+  "fmt_pass": true,
+  "terraform_init_pass": true,
+  "terraform_valid": false,
+  "original_checkov_scan_success": true,
+  "remediated_checkov_scan_success": true,
+  "original_findings": [
+    {
+      "check_id": "CKV_AWS_288",
+      "check_name": "Ensure IAM policies does not allow data exfiltration",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_355",
+      "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_290",
+      "check_name": "Ensure IAM policies does not allow write access without constraints",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_6",
+      "check_name": "Ensure that S3 bucket has a Public Access block",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "module.storage.aws_kms_key.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        1,
+        4
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_18",
+      "check_name": "Ensure the S3 bucket has access logging enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    }
+  ],
+  "remediated_findings": [
+    {
+      "check_id": "CKV_AWS_300",
+      "check_name": "Ensure S3 lifecycle configuration sets period for aborting failed uploads",
+      "resource": "module.storage.aws_s3_bucket_lifecycle_configuration.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        96,
+        112
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        44,
+        46
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_145",
+      "check_name": "Ensure that S3 buckets are encrypted with KMS by default",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    }
+  ],
+  "original_failed_finding_count": 10,
+  "remediated_failed_finding_count": 7,
+  "removed_original_findings": [
+    {
+      "check_id": "CKV2_AWS_6",
+      "check_name": "Ensure that S3 bucket has a Public Access block",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_64",
+      "check_name": "Ensure KMS key Policy is defined",
+      "resource": "module.storage.aws_kms_key.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        1,
+        4
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_18",
+      "check_name": "Ensure the S3 bucket has access logging enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_288",
+      "check_name": "Ensure IAM policies does not allow data exfiltration",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_290",
+      "check_name": "Ensure IAM policies does not allow write access without constraints",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_355",
+      "check_name": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+      "resource": "aws_iam_policy.worker",
+      "severity": null,
+      "file_path": "main.tf",
+      "file_line_range": [
+        41,
+        90
+      ]
+    }
+  ],
+  "remaining_original_findings": [
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        6,
+        8
+      ]
+    }
+  ],
+  "new_findings": [
+    {
+      "check_id": "CKV2_AWS_61",
+      "check_name": "Ensure that an S3 bucket has a lifecycle configuration",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV2_AWS_62",
+      "check_name": "Ensure S3 buckets should have event notifications enabled",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_144",
+      "check_name": "Ensure that S3 bucket has cross-region replication enabled",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_145",
+      "check_name": "Ensure that S3 buckets are encrypted with KMS by default",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_21",
+      "check_name": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "resource": "module.storage.aws_s3_bucket.log",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        83,
+        85
+      ]
+    },
+    {
+      "check_id": "CKV_AWS_300",
+      "check_name": "Ensure S3 lifecycle configuration sets period for aborting failed uploads",
+      "resource": "module.storage.aws_s3_bucket_lifecycle_configuration.data",
+      "severity": null,
+      "file_path": "modules/storage/main.tf",
+      "file_line_range": [
+        96,
+        112
+      ]
+    }
+  ],
+  "removed_original_finding_count": 9,
+  "remaining_original_finding_count": 1,
+  "new_finding_count": 6,
+  "remediation_coverage": 0.9,
+  "resources_preserved": true,
+  "missing_resources": [],
+  "original_resource_count": 6,
+  "remediated_resource_count": 15,
+  "project_structure_preserved": true,
+  "missing_terraform_files": [],
+  "added_terraform_files": [],
+  "suppression_added": false,
+  "added_suppressions": [],
+  "semantic_validation_status": "generic_invariants_only",
+  "semantic_validation_configured": false,
+  "semantic_validation_pass": true,
+  "terraform_command_results": {
+    "fmt": {
+      "pass": true,
+      "stdout": "",
+      "stderr": ""
+    },
+    "init": {
+      "pass": true,
+      "stdout": "Initializing modules...\n- storage in modules/storage\n\nInitializing provider plugins...\n- Finding hashicorp/aws versions matching \"~> 5.0\"...\n- Installing hashicorp/aws v5.100.0...\n- Installed hashicorp/aws v5.100.0 (signed by HashiCorp)\n\nTerraform has created a lock file .terraform.lock.hcl to record the provider\nselections it made above. Include this file in your version control repository\nso that Terraform can guarantee to make the same selections by default when\nyou run \"terraform init\" in the future.\n\nTerraform has been successfully initialized!\n\nYou may now begin working with Terraform. Try running \"terraform plan\" to see\nany changes that are required for your infrastructure. All Terraform commands\nshould now work.\n\nIf you ever set or change modules or backend configuration for Terraform,\nrerun this command to reinitialize your working directory. If you forget, other\ncommands will detect it and remind you to do so if necessary.",
+      "stderr": ""
+    },
+    "validate": {
+      "pass": false,
+      "valid": false,
+      "diagnostics": [
+        {
+          "severity": "error",
+          "summary": "Unsupported block type",
+          "detail": "Blocks of type \"eventbridge\" are not expected here. Did you mean to define argument \"eventbridge\"? If so, use the equals sign to assign it a value.",
+          "range": {
+            "filename": "modules/storage/main.tf",
+            "start": {
+              "line": 117,
+              "column": 3,
+              "byte": 2620
+            },
+            "end": {
+              "line": 117,
+              "column": 14,
+              "byte": 2631
+            }
+          },
+          "snippet": {
+            "context": "resource \"aws_s3_bucket_notification\" \"data\"",
+            "code": "  eventbridge {}",
+            "start_line": 117,
+            "highlight_start_offset": 2,
+            "highlight_end_offset": 13,
+            "values": []
+          }
+        },
+        {
+          "severity": "warning",
+          "summary": "Invalid Attribute Combination",
+          "detail": "No attribute specified when one (and only one) of [rule[0].filter,rule[0].prefix] is required\n\nThis will be an error in a future version of the provider",
+          "address": "module.storage.aws_s3_bucket_lifecycle_configuration.data",
+          "range": {
+            "filename": "modules/storage/main.tf",
+            "start": {
+              "line": 99,
+              "column": 8,
+              "byte": 2291
+            },
+            "end": {
+              "line": 99,
+              "column": 9,
+              "byte": 2292
+            }
+          },
+          "snippet": {
+            "context": "resource \"aws_s3_bucket_lifecycle_configuration\" \"data\"",
+            "code": "  rule {",
+            "start_line": 99,
+            "highlight_start_offset": 7,
+            "highlight_end_offset": 8,
+            "values": []
+          }
+        }
+      ],
+      "stdout": "{\n  \"format_version\": \"1.0\",\n  \"valid\": false,\n  \"error_count\": 1,\n  \"warning_count\": 1,\n  \"diagnostics\": [\n    {\n      \"severity\": \"error\",\n      \"summary\": \"Unsupported block type\",\n      \"detail\": \"Blocks of type \\\"eventbridge\\\" are not expected here. Did you mean to define argument \\\"eventbridge\\\"? If so, use the equals sign to assign it a value.\",\n      \"range\": {\n        \"filename\": \"modules/storage/main.tf\",\n        \"start\": {\n          \"line\": 117,\n          \"column\": 3,\n          \"byte\": 2620\n        },\n        \"end\": {\n          \"line\": 117,\n          \"column\": 14,\n          \"byte\": 2631\n        }\n      },\n      \"snippet\": {\n        \"context\": \"resource \\\"aws_s3_bucket_notification\\\" \\\"data\\\"\",\n        \"code\": \"  eventbridge {}\",\n        \"start_line\": 117,\n        \"highlight_start_offset\": 2,\n        \"highlight_end_offset\": 13,\n        \"values\": []\n      }\n    },\n    {\n      \"severity\": \"warning\",\n      \"summary\": \"Invalid Attribute Combination\",\n      \"detail\": \"No attribute specified when one (and only one) of [rule[0].filter,rule[0].prefix] is required\\n\\nThis will be an error in a future version of the provider\",\n      \"address\": \"module.storage.aws_s3_bucket_lifecycle_configuration.data\",\n      \"range\": {\n        \"filename\": \"modules/storage/main.tf\",\n        \"start\": {\n          \"line\": 99,\n          \"column\": 8,\n          \"byte\": 2291\n        },\n        \"end\": {\n          \"line\": 99,\n          \"column\": 9,\n          \"byte\": 2292\n        }\n      },\n      \"snippet\": {\n        \"context\": \"resource \\\"aws_s3_bucket_lifecycle_configuration\\\" \\\"data\\\"\",\n        \"code\": \"  rule {\",\n        \"start_line\": 99,\n        \"highlight_start_offset\": 7,\n        \"highlight_end_offset\": 8,\n        \"values\": []\n      }\n    }\n  ]\n}",
+      "stderr": ""
+    }
+  },
+  "terraform_diagnostics": [
+    {
+      "severity": "error",
+      "summary": "Unsupported block type",
+      "detail": "Blocks of type \"eventbridge\" are not expected here. Did you mean to define argument \"eventbridge\"? If so, use the equals sign to assign it a value.",
+      "range": {
+        "filename": "modules/storage/main.tf",
+        "start": {
+          "line": 117,
+          "column": 3,
+          "byte": 2620
+        },
+        "end": {
+          "line": 117,
+          "column": 14,
+          "byte": 2631
+        }
+      },
+      "snippet": {
+        "context": "resource \"aws_s3_bucket_notification\" \"data\"",
+        "code": "  eventbridge {}",
+        "start_line": 117,
+        "highlight_start_offset": 2,
+        "highlight_end_offset": 13,
+        "values": []
+      }
+    },
+    {
+      "severity": "warning",
+      "summary": "Invalid Attribute Combination",
+      "detail": "No attribute specified when one (and only one) of [rule[0].filter,rule[0].prefix] is required\n\nThis will be an error in a future version of the provider",
+      "address": "module.storage.aws_s3_bucket_lifecycle_configuration.data",
+      "range": {
+        "filename": "modules/storage/main.tf",
+        "start": {
+          "line": 99,
+          "column": 8,
+          "byte": 2291
+        },
+        "end": {
+          "line": 99,
+          "column": 9,
+          "byte": 2292
+        }
+      },
+      "snippet": {
+        "context": "resource \"aws_s3_bucket_lifecycle_configuration\" \"data\"",
+        "code": "  rule {",
+        "start_line": 99,
+        "highlight_start_offset": 7,
+        "highlight_end_offset": 8,
+        "values": []
+      }
+    }
+  ],
+  "scan_errors": {
+    "original": null,
+    "remediated": null
+  },
+  "final_result": "FAIL",
+  "failure_reasons": [
+    "TERRAFORM_VALIDATE_FAILURE",
+    "REMAINING_SECURITY_FINDINGS",
+    "NEW_SECURITY_FINDINGS"
+  ]
+}
