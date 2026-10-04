@@ -87,8 +87,8 @@ class ProjectRemediationError(RuntimeError):
     """A clear, user-facing project remediation runner error."""
 
 
-def load_project(sample_id: str):
-    sample_dir = SAMPLES_DIR / sample_id
+def load_project(sample_id: str, samples_dir: Path = SAMPLES_DIR):
+    sample_dir = samples_dir / sample_id
     if not sample_dir.is_dir():
         raise ProjectRemediationError(
             f"Terraform sample directory does not exist: {sample_dir}"
@@ -315,7 +315,8 @@ def run(args):
         raise ProjectRemediationError("--max-tokens must be greater than zero.")
 
     check_required_tools()
-    sample_dir, source_files = load_project(args.sample_id)
+    samples_dir = Path(args.samples_dir).resolve() if args.samples_dir else SAMPLES_DIR
+    sample_dir, source_files = load_project(args.sample_id, samples_dir)
     print(f"Scanning original project: {sample_dir}")
     original_scan = run_checkov(sample_dir)
     if not original_scan["success"]:
@@ -324,7 +325,10 @@ def run(args):
         )
 
     prompt = build_prompt(source_files, original_scan["findings"])
-    run_dir = EXPERIMENTS_DIR / args.sample_id / args.tier / args.run_id
+    experiments_dir = (
+        Path(args.output_dir).resolve() if args.output_dir else EXPERIMENTS_DIR
+    )
+    run_dir = experiments_dir / args.sample_id / args.tier / args.run_id
     original_dir = run_dir / "original"
     remediated_dir = run_dir / "remediated"
     prompt_file = run_dir / "prompt.txt"
@@ -514,6 +518,19 @@ def parse_args():
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--run-id", default="run_01")
     parser.add_argument("--max-tokens", type=int, default=DEFAULT_MAX_TOKENS)
+    parser.add_argument(
+        "--output-dir",
+        default=None,
+        help=(
+            "Experiment output root. Defaults to the existing "
+            "project_experiments directory."
+        ),
+    )
+    parser.add_argument(
+        "--samples-dir",
+        default=None,
+        help="Prepared sample root. Defaults to the existing pilot_samples directory.",
+    )
     return parser.parse_args()
 
 
